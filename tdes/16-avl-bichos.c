@@ -171,48 +171,83 @@ void libera(TNoA *a) {
     }
 }
 
+int leLinha(char *destino, int tamanho) {
+    if (fgets(destino, tamanho, stdin) == NULL)
+        return 0;
+    destino[strcspn(destino, "\n")] = '\0';
+    return 1;
+}
+
 int main(void) {
     TNoA *raiz = NULL;
-    /* em ordem alfabética, para forçar as rotações */
+    /* carga inicial em ordem alfabética, para forçar as rotações */
     const char *bichos[] = {"anta", "baleia", "capivara", "elefante", "foca", "gato",
                             "hiena", "jacare", "leao", "macaco", "onca", "pato",
-                            "quati", "rato", "sapo", "tatu", "urso", "zebra",
-                            "coelho", "cavalo", "gato"};
+                            "quati", "rato", "sapo", "tatu", "urso", "zebra"};
     int n = sizeof(bichos) / sizeof(bichos[0]);
-    int inseriu;
+    int ok;
 
-    for (int i = 0; i < n; i++) {
-        raiz = insere(raiz, bichos[i], &inseriu);
-        if (!inseriu)
-            printf("%s ja esta na arvore\n", bichos[i]);
-    }
+    for (int i = 0; i < n; i++)
+        raiz = insere(raiz, bichos[i], &ok);
 
-    printf("Altura da arvore: %d\n\n", altura(raiz));
-    exibeArvore(raiz, 0);
-    printf("\nEm ordem:\n");
-    exibeEmOrdem(raiz);
+    char linha[MAX_NOME];
+    char nome[MAX_NOME];
+    int opcao = -1;
+    do {
+        printf("\n1 - Inserir bicho\n");
+        printf("2 - Consultar bicho\n");
+        printf("3 - Remover bicho\n");
+        printf("4 - Exibir em ordem alfabetica\n");
+        printf("5 - Exibir arvore com fatores de balanceamento\n");
+        printf("0 - Sair\n");
+        printf("Opcao: ");
+        if (!leLinha(linha, MAX_NOME))
+            break;
+        if (sscanf(linha, "%d", &opcao) != 1)
+            opcao = -1;
 
-    const char *buscas[] = {"jacare", "capivara", "girafa"};
-    int comparacoes;
-    printf("\n");
-    for (int i = 0; i < 3; i++) {
-        if (consulta(raiz, buscas[i], &comparacoes) != NULL)
-            printf("%s encontrado com %d comparacoes\n", buscas[i], comparacoes);
-        else
-            printf("%s nao encontrado (%d comparacoes)\n", buscas[i], comparacoes);
-    }
+        if (opcao >= 1 && opcao <= 3) {
+            printf("Nome do bicho: ");
+            if (!leLinha(nome, MAX_NOME))
+                break;
+            if (nome[0] == '\0') {
+                printf("Nome vazio\n");
+                continue;
+            }
+        }
 
-    /* folha, nodo com dois filhos, a raiz e um bicho que não existe */
-    const char *remocoes[] = {"anta", "pato", "jacare", "zebra", "urso", "girafa"};
-    int removeu;
-    for (int i = 0; i < 6; i++) {
-        raiz = removeNo(raiz, remocoes[i], &removeu);
-        if (removeu)
-            printf("\nDepois de remover %s:\n", remocoes[i]);
-        else
-            printf("\n%s nao esta na arvore:\n", remocoes[i]);
-        exibeArvore(raiz, 0);
-    }
+        if (opcao == 1) {
+            raiz = insere(raiz, nome, &ok);
+            if (ok)
+                printf("%s inserido\n", nome);
+            else
+                printf("%s ja esta na arvore\n", nome);
+        } else if (opcao == 2) {
+            int comparacoes;
+            if (consulta(raiz, nome, &comparacoes) != NULL)
+                printf("%s encontrado com %d comparacoes\n", nome, comparacoes);
+            else
+                printf("%s nao encontrado (%d comparacoes)\n", nome, comparacoes);
+        } else if (opcao == 3) {
+            raiz = removeNo(raiz, nome, &ok);
+            if (ok)
+                printf("%s removido\n", nome);
+            else
+                printf("%s nao esta na arvore\n", nome);
+        } else if (opcao == 4) {
+            if (raiz == NULL)
+                printf("Arvore vazia\n");
+            exibeEmOrdem(raiz);
+        } else if (opcao == 5) {
+            if (raiz == NULL)
+                printf("Arvore vazia\n");
+            else
+                printf("Altura: %d\n", altura(raiz));
+            exibeArvore(raiz, 0);
+        } else if (opcao != 0) {
+            printf("Opcao invalida\n");
+        }
+    } while (opcao != 0);
 
     libera(raiz);
     return 0;
