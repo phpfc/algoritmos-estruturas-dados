@@ -96,6 +96,38 @@ TNoA *insere(TNoA *a, const char *nome, int *inseriu) {
     return balanceia(a);
 }
 
+TNoA *menor(TNoA *a) {
+    while (a->esq != NULL)
+        a = a->esq;
+    return a;
+}
+
+/* nodo com dois filhos é substituído pelo menor da subárvore direita */
+TNoA *removeNo(TNoA *a, const char *nome, int *removeu) {
+    if (a == NULL) {
+        *removeu = 0;
+        return NULL;
+    }
+    int cmp = strcmp(nome, a->nome);
+    if (cmp < 0) {
+        a->esq = removeNo(a->esq, nome, removeu);
+    } else if (cmp > 0) {
+        a->dir = removeNo(a->dir, nome, removeu);
+    } else {
+        *removeu = 1;
+        if (a->esq == NULL || a->dir == NULL) {
+            TNoA *filho = a->esq != NULL ? a->esq : a->dir;
+            free(a);
+            return filho;
+        }
+        TNoA *sucessor = menor(a->dir);
+        strcpy(a->nome, sucessor->nome);
+        int aux;
+        a->dir = removeNo(a->dir, sucessor->nome, &aux);
+    }
+    return balanceia(a);
+}
+
 /* retorna o nodo do bicho (ou NULL) e conta as comparações feitas na busca */
 TNoA *consulta(TNoA *a, const char *nome, int *comparacoes) {
     *comparacoes = 0;
@@ -168,6 +200,18 @@ int main(void) {
             printf("%s encontrado com %d comparacoes\n", buscas[i], comparacoes);
         else
             printf("%s nao encontrado (%d comparacoes)\n", buscas[i], comparacoes);
+    }
+
+    /* folha, nodo com dois filhos, a raiz e um bicho que não existe */
+    const char *remocoes[] = {"anta", "pato", "jacare", "zebra", "urso", "girafa"};
+    int removeu;
+    for (int i = 0; i < 6; i++) {
+        raiz = removeNo(raiz, remocoes[i], &removeu);
+        if (removeu)
+            printf("\nDepois de remover %s:\n", remocoes[i]);
+        else
+            printf("\n%s nao esta na arvore:\n", remocoes[i]);
+        exibeArvore(raiz, 0);
     }
 
     libera(raiz);
