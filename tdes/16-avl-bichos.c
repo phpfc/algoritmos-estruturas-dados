@@ -96,6 +96,22 @@ TNoA *insere(TNoA *a, const char *nome, int *inseriu) {
     return balanceia(a);
 }
 
+/* retorna o nodo do bicho (ou NULL) e conta as comparações feitas na busca */
+TNoA *consulta(TNoA *a, const char *nome, int *comparacoes) {
+    *comparacoes = 0;
+    while (a != NULL) {
+        (*comparacoes)++;
+        int cmp = strcmp(nome, a->nome);
+        if (cmp == 0)
+            return a;
+        if (cmp < 0)
+            a = a->esq;
+        else
+            a = a->dir;
+    }
+    return NULL;
+}
+
 void exibeEmOrdem(TNoA *a) {
     if (a != NULL) {
         exibeEmOrdem(a->esq);
@@ -143,6 +159,16 @@ int main(void) {
     exibeArvore(raiz, 0);
     printf("\nEm ordem:\n");
     exibeEmOrdem(raiz);
+
+    const char *buscas[] = {"jacare", "capivara", "girafa"};
+    int comparacoes;
+    printf("\n");
+    for (int i = 0; i < 3; i++) {
+        if (consulta(raiz, buscas[i], &comparacoes) != NULL)
+            printf("%s encontrado com %d comparacoes\n", buscas[i], comparacoes);
+        else
+            printf("%s nao encontrado (%d comparacoes)\n", buscas[i], comparacoes);
+    }
 
     libera(raiz);
     return 0;
