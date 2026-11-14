@@ -46,6 +46,20 @@ void enviaDocumento(int impressora, int codigo, const char *nome) {
     f->qtd++;
 }
 
+int imprime(int impressora) {
+    Fila *f = &impressoras[impressora];
+    if (f->inicio == NULL)
+        return 0;
+    Documento *removido = f->inicio;
+    printf("Impressora %d imprimindo: %d %s\n", impressora, removido->codigo, removido->nome);
+    f->inicio = removido->prox;
+    if (f->inicio == NULL)
+        f->fim = NULL;
+    free(removido);
+    f->qtd--;
+    return 1;
+}
+
 void exibeFila(int impressora) {
     Fila *f = &impressoras[impressora];
     printf("Impressora %d (%d na fila):", impressora, f->qtd);
@@ -72,6 +86,13 @@ int main(void) {
     enviaDocumento(0, 2, "boleto.pdf");
     enviaDocumento(1, 3, "foto.png");
     enviaDocumento(0, 4, "contrato.docx");
+    for (int i = 0; i < NUM_IMPRESSORAS; i++)
+        exibeFila(i);
+
+    imprime(0);
+    imprime(1);
+    if (!imprime(2))
+        printf("Impressora 2 sem documentos na fila\n");
     for (int i = 0; i < NUM_IMPRESSORAS; i++)
         exibeFila(i);
     libera();
