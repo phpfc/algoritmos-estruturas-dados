@@ -62,6 +62,48 @@ TNoA *rotacaoEsquerda(TNoA *a) {
     return b;
 }
 
+/* as rotações duplas são feitas com duas rotações simples */
+TNoA *balanceia(TNoA *a) {
+    atualizaAltura(a);
+    int fb = fator(a);
+    if (fb > 1) {
+        if (fator(a->esq) < 0)
+            a->esq = rotacaoEsquerda(a->esq);
+        return rotacaoDireita(a);
+    }
+    if (fb < -1) {
+        if (fator(a->dir) > 0)
+            a->dir = rotacaoDireita(a->dir);
+        return rotacaoEsquerda(a);
+    }
+    return a;
+}
+
+TNoA *insere(TNoA *a, const char *nome, int *inseriu) {
+    if (a == NULL) {
+        *inseriu = 1;
+        return criaNo(nome);
+    }
+    int cmp = strcmp(nome, a->nome);
+    if (cmp < 0)
+        a->esq = insere(a->esq, nome, inseriu);
+    else if (cmp > 0)
+        a->dir = insere(a->dir, nome, inseriu);
+    else {
+        *inseriu = 0;
+        return a;
+    }
+    return balanceia(a);
+}
+
+void exibeEmOrdem(TNoA *a) {
+    if (a != NULL) {
+        exibeEmOrdem(a->esq);
+        printf("%s\n", a->nome);
+        exibeEmOrdem(a->dir);
+    }
+}
+
 /* escreve a árvore deitada: a raiz fica na esquerda e a subárvore direita em cima */
 void exibeArvore(TNoA *a, int nivel) {
     if (a == NULL)
@@ -82,19 +124,25 @@ void libera(TNoA *a) {
 }
 
 int main(void) {
-    /* árvore degenerada para a esquerda: zebra -> gato -> anta */
-    TNoA *raiz = criaNo("zebra");
-    raiz->esq = criaNo("gato");
-    raiz->esq->esq = criaNo("anta");
-    atualizaAltura(raiz->esq);
-    atualizaAltura(raiz);
+    TNoA *raiz = NULL;
+    /* em ordem alfabética, para forçar as rotações */
+    const char *bichos[] = {"anta", "baleia", "capivara", "elefante", "foca", "gato",
+                            "hiena", "jacare", "leao", "macaco", "onca", "pato",
+                            "quati", "rato", "sapo", "tatu", "urso", "zebra",
+                            "coelho", "cavalo", "gato"};
+    int n = sizeof(bichos) / sizeof(bichos[0]);
+    int inseriu;
 
-    printf("Antes da rotacao a direita:\n");
-    exibeArvore(raiz, 0);
+    for (int i = 0; i < n; i++) {
+        raiz = insere(raiz, bichos[i], &inseriu);
+        if (!inseriu)
+            printf("%s ja esta na arvore\n", bichos[i]);
+    }
 
-    raiz = rotacaoDireita(raiz);
-    printf("\nDepois da rotacao a direita:\n");
+    printf("Altura da arvore: %d\n\n", altura(raiz));
     exibeArvore(raiz, 0);
+    printf("\nEm ordem:\n");
+    exibeEmOrdem(raiz);
 
     libera(raiz);
     return 0;
