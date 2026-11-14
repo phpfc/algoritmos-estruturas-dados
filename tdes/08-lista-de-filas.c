@@ -60,6 +60,27 @@ int imprime(int impressora) {
     return 1;
 }
 
+int cancela(int impressora, int codigo) {
+    Fila *f = &impressoras[impressora];
+    Documento *ant = NULL;
+    Documento *atual = f->inicio;
+    while (atual != NULL && atual->codigo != codigo) {
+        ant = atual;
+        atual = atual->prox;
+    }
+    if (atual == NULL)
+        return 0;
+    if (ant == NULL)
+        f->inicio = atual->prox;
+    else
+        ant->prox = atual->prox;
+    if (atual == f->fim)
+        f->fim = ant;
+    free(atual);
+    f->qtd--;
+    return 1;
+}
+
 void exibeFila(int impressora) {
     Fila *f = &impressoras[impressora];
     printf("Impressora %d (%d na fila):", impressora, f->qtd);
@@ -93,6 +114,13 @@ int main(void) {
     imprime(1);
     if (!imprime(2))
         printf("Impressora 2 sem documentos na fila\n");
+    for (int i = 0; i < NUM_IMPRESSORAS; i++)
+        exibeFila(i);
+
+    cancela(0, 4);
+    if (!cancela(0, 99))
+        printf("Documento 99 nao esta na fila da impressora 0\n");
+    enviaDocumento(0, 5, "slides.pptx");
     for (int i = 0; i < NUM_IMPRESSORAS; i++)
         exibeFila(i);
     libera();
