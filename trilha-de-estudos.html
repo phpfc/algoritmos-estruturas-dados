@@ -1,0 +1,1390 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trilha Prova 2 Algoritmos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Roteiro linear: um passo por vez. Mesma estrutura do "Roteiro AP2", com fontes de sistema (sem CDN). */
+:root {
+  --paper: #f7f9fc; --card: #ffffff; --ink: #15203a; --muted: #56627a; --line: #d6dde9;
+  --grid: rgba(37, 92, 180, .11); --grid-strong: rgba(37, 92, 180, .2); --tint: #edf2fb;
+  --accent: #1f5ec0; --accent-ink: #ffffff; --red: #c0352a; --red-tint: #fbefed;
+  --green: #1d7a4c; --green-tint: #e8f5ee; --amber: #8a5a00; --amber-tint: #fdf3e0;
+  --f-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --f-math: "STIX Two Text", Cambria, "Cambria Math", "Times New Roman", serif;
+  --f-code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1420; --card: #141c2b; --ink: #e5eaf4; --muted: #9ba7bd; --line: #27324a;
+    --grid: rgba(120, 165, 240, .09); --grid-strong: rgba(120, 165, 240, .18); --tint: #1a2540;
+    --accent: #7ea8ff; --accent-ink: #0e1420; --red: #ff8070; --red-tint: #2a1a1c;
+    --green: #6fd3a0; --green-tint: #15291f; --amber: #f0bb63; --amber-tint: #2b2113;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1420; --card: #141c2b; --ink: #e5eaf4; --muted: #9ba7bd; --line: #27324a;
+  --grid: rgba(120, 165, 240, .09); --grid-strong: rgba(120, 165, 240, .18); --tint: #1a2540;
+  --accent: #7ea8ff; --accent-ink: #0e1420; --red: #ff8070; --red-tint: #2a1a1c;
+  --green: #6fd3a0; --green-tint: #15291f; --amber: #f0bb63; --amber-tint: #2b2113;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16.5px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 880px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { padding-block: 26px 6px; }
+.eyebrow { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+h1 { font-weight: 800; font-size: clamp(27px, 5vw, 38px); line-height: 1.08; margin: 6px 0 10px; letter-spacing: -.015em; text-wrap: balance; }
+.lead { color: var(--muted); max-width: 64ch; margin: 0 0 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; color: var(--muted); }
+.legend b { color: var(--ink); }
+nav.rail { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--paper); border-bottom: 1px solid var(--line); padding-block: 9px; margin-top: 14px; }
+.dots { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 3px; }
+.dot { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 3px 10px 3px 4px; font: inherit; font-size: 13.5px; white-space: nowrap; cursor: pointer; }
+.dot .n { display: inline-grid; place-items: center; width: 21px; height: 21px; border-radius: 50%; background: var(--tint); font-weight: 700; font-size: 12px; font-variant-numeric: tabular-nums; }
+.dot[aria-current="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.dot[aria-current="true"] .n { background: var(--accent-ink); color: var(--accent); }
+.dot.full .n { background: var(--green); color: var(--card); }
+.dot[aria-current="true"].full .n { background: var(--accent-ink); color: var(--green); }
+.dot .d { font-size: 11px; opacity: .65; font-weight: 700; letter-spacing: .05em; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; font-size: 14px; color: var(--muted); }
+.progress { display: flex; align-items: center; gap: 9px; }
+.meter { width: 110px; height: 7px; border-radius: 99px; background: var(--tint); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--green); transition: width .3s; }
+.meter i.has-x { background: linear-gradient(90deg, var(--green) var(--okpct, 100%), var(--red) var(--okpct, 100%)); }
+button.tool { font: inherit; font-size: 13.5px; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+button.tool:hover { border-color: var(--accent); }
+button.tool.danger { border-color: var(--red); color: var(--red); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main { padding-block: 20px 24px; }
+.step { display: none; }
+.step.on { display: block; animation: fade .18s ease-out; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .step.on { animation: none; } html { scroll-behavior: auto; } .meter i { transition: none; } }
+.shead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.day { font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; font-weight: 800; color: var(--accent); }
+.of { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin-left: auto; }
+h2 { font-weight: 700; font-size: clamp(22px, 4vw, 29px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -.012em; text-wrap: balance; }
+.intro { color: var(--muted); max-width: 68ch; margin: 0 0 18px; }
+.ess { border: 1px solid var(--grid-strong); border-radius: 10px; padding: 13px 16px 15px; margin-bottom: 22px; background-color: var(--card);
+  background-image: linear-gradient(var(--grid-strong) 1px, transparent 1px), linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px), linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px; }
+.ess .tag { font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--accent); display: block; margin-bottom: 7px; }
+.ess ul { margin: 0; padding-left: 19px; }
+.ess li { margin: 5px 0; }
+.item { background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 13px 16px; margin-bottom: 13px; scroll-margin-top: 110px; }
+.item[data-mark="ok"] { border-left: 4px solid var(--green); padding-left: 13px; }
+.item[data-mark="x"] { border-left: 4px solid var(--red); padding-left: 13px; }
+.ihead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 7px; }
+.src { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--tint); border-radius: 5px; padding: 2px 7px; }
+.item[data-mark="ok"] .src { color: var(--green); background: var(--green-tint); }
+.item[data-mark="x"] .src { color: var(--red); background: var(--red-tint); }
+.marks { margin-left: auto; display: flex; gap: 5px; }
+.marks button { font: inherit; font-size: 13px; line-height: 1; border: 1px solid var(--line); background: var(--paper); color: var(--muted); border-radius: 7px; padding: 5px 9px; cursor: pointer; }
+.marks button:hover { border-color: var(--accent); color: var(--ink); }
+.marks button[data-m="ok"][aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--card); }
+.marks button[data-m="x"][aria-pressed="true"] { background: var(--red); border-color: var(--red); color: var(--card); }
+.q { margin: 0 0 4px; }
+.sub { margin: 7px 0 0; padding-left: 19px; }
+.sub li { margin: 4px 0; }
+.note { font-size: 14px; color: var(--muted); }
+.note.warn { color: var(--amber); }
+details.ans { margin-top: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); }
+details.ans > summary { cursor: pointer; padding: 8px 13px; font-weight: 700; font-size: 14.5px; list-style: none; display: flex; gap: 9px; align-items: center; }
+details.ans > summary::-webkit-details-marker { display: none; }
+details.ans > summary::before { content: "?"; display: inline-grid; place-items: center; flex: 0 0 20px; height: 20px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 12.5px; }
+details.ans[open] > summary::before { content: "\2713"; background: var(--green); }
+details.ans > div { padding: 0 13px 11px; }
+details.ans p { margin: 0 0 6px; }
+details.ans p:last-child { margin-bottom: 0; }
+details.ans ol, details.ans ul { margin: 0; padding-left: 20px; }
+details.ans li { margin: 3px 0; }
+.res { font-weight: 700; color: var(--green); }
+.box { border: 1px solid var(--line); border-radius: 11px; padding: 13px 16px; margin-bottom: 14px; background: var(--card); }
+.box.gap { border-style: dashed; background: var(--amber-tint); border-color: var(--amber); }
+.box h3 { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 7px; color: var(--muted); }
+h3.sec { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; margin: 24px 0 9px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; }
+textarea { width: 100%; min-height: 110px; font: inherit; font-size: 15px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; resize: vertical; }
+ul.check { list-style: none; padding-left: 0; margin: 0; }
+ul.check li { margin: 5px 0; }
+ul.check label { display: flex; align-items: flex-start; gap: 9px; cursor: pointer; }
+ul.check input { width: 18px; height: 18px; accent-color: var(--green); margin-top: 3px; flex: 0 0 auto; }
+ul.check input:checked + span { color: var(--muted); text-decoration: line-through; }
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; margin: 9px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--tint); }
+tr:last-child td { border-bottom: 0; }
+td.m, td.c { white-space: nowrap; }
+.m { font-family: var(--f-math); font-size: 1.07em; }
+.mb { font-family: var(--f-math); font-size: 18px; display: block; padding: 5px 0; overflow-x: auto; }
+sup, sub { font-size: 70%; line-height: 0; }
+pre { font-family: var(--f-code); font-size: 13.5px; line-height: 1.45; background: var(--tint); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; margin: 8px 0; }
+code { font-family: var(--f-code); font-size: .92em; background: var(--tint); border-radius: 4px; padding: 1px 5px; }
+pre code { background: none; padding: 0; }
+.tree { font-family: var(--f-code); font-size: 14px; line-height: 1.3; white-space: pre; overflow-x: auto; background: var(--card); border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
+.pager { display: flex; gap: 10px; align-items: center; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
+.pager button { font: inherit; font-size: 15px; font-weight: 600; border-radius: 9px; padding: 10px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.pager button.next { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); margin-left: auto; }
+.pager button:disabled { opacity: .4; cursor: default; }
+footer { color: var(--muted); font-size: 14px; padding-block: 10px 44px; border-top: 1px solid var(--line); margin-top: 20px; }
+footer p { margin: 0 0 6px; }
+details.cut { border: 1px solid var(--line); border-radius: 9px; background: var(--card); margin-top: 12px; }
+details.cut summary { cursor: pointer; padding: 9px 14px; font-weight: 700; font-size: 14.5px; }
+details.cut > div { padding: 0 14px 12px; }
+.msg { font-size: 13.5px; color: var(--amber); }
+@media (max-width: 560px) { body { font-size: 16px; } .item, .ess, .box { padding-left: 13px; padding-right: 13px; } }
+</style>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Algoritmos e Estrutura de Dados I &middot; Prova 2 sexta 27/11</div>
+  <h1>Trilha Prova 2 — pesquisa, ordenação e árvores</h1>
+  <p class="lead">Três semanas até a Prova 2, que cobre pesquisa binária, tabela hash, métodos de ordenação e árvores binárias com suas aplicações (ABP, expressões aritméticas, AVL). Cada exercício está com o enunciado inteiro e a resposta escondida: você resolve no papel (ou no compilador), abre e marca ✓ ou ✗. Os passos de revisão juntam sozinhos tudo que você marcou com ✗.</p>
+  <div class="legend"><span><b>AVA</b> seção Exercício das aulas</span><span><b>SL</b> slides e PDFs da professora</span><span><b>ENADE</b> questões do Enade postadas na aula</span><span><b>TDE</b> tarefas com entrega</span><span><b>TR</b> exercício escrito para esta trilha</span></div>
+  <details class="cut"><summary>Se o tempo apertar — ordem de corte</summary><div>
+    <ol>
+      <li>No passo 5, faça só quicksort e heapsort; shellsort, radixsort e mergesort ficam como leitura.</li>
+      <li>No passo 10, implemente só os itens 2, 4 e 5 (soma das folhas, níveis e pai).</li>
+      <li>Os itens <b>TR</b> dos passos 2 e 3.</li>
+    </ol>
+    <p class="note">Nunca corte o <b>passo 1 (TDE com prazo 12/11)</b>, o <b>passo 9 (ABP)</b> nem o <b>passo 13 (simulado)</b>.</p>
+  </div></details>
+</header>
+
+<nav class="rail" aria-label="Passos">
+  <div class="dots" id="dots"></div>
+  <div class="bar">
+    <div class="progress"><span id="count">0 de 0 exercícios feitos</span><span class="meter" aria-hidden="true"><i id="meter"></i></span></div>
+    <div style="display:flex;gap:6px;align-items:center"><span id="msg" class="msg"></span>
+      <button class="tool" id="jumpX" type="button">Ir para os ✗</button>
+      <button class="tool" id="reset" type="button">Zerar</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============ PASSO 1 ============ -->
+<section class="step" data-s="1" data-tag="S1" data-label="Expressões + TDE">
+  <div class="shead"><span class="day">Semana 1 · segunda 09/11 · TDE vence quinta 12/11</span><span class="of"></span></div>
+  <h2>Árvores de expressão e o TDE da expressão parentizada</h2>
+  <p class="intro">Primeiro o que tem prazo. A aula 15 mostrou como uma expressão aritmética vira árvore binária: operandos nas folhas, operadores nos nós internos, operador de menor prioridade na raiz. Os três percursos dão as três notações, e o TDE pede o percurso central com parênteses.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Montar a árvore:</b> ache o operador que será executado <b>por último</b> (menor prioridade, fora de parênteses, o mais à direita entre iguais): ele é a raiz. A subexpressão à esquerda dele vira a subárvore esquerda; a da direita, a direita. Repita.</li>
+      <li>Prioridade: parênteses &gt; <span class="m">* /</span> &gt; <span class="m">+ −</span>; entre iguais, da esquerda para a direita (então em <span class="m">a − b + c</span> a raiz é o <span class="m">+</span>).</li>
+      <li><b>Pré-ordem</b> = notação polonesa (operador antes dos operandos). <b>Pós-ordem</b> = polonesa reversa (RPN, operandos antes; a das calculadoras HP). <b>Central</b> = a expressão original, que precisa de parênteses para ficar sem ambiguidade.</li>
+      <li><b>Avaliar RPN com pilha:</b> operando → empilha; operador → desempilha dois, opera (o segundo desempilhado é o da esquerda), empilha o resultado.</li>
+      <li><b>Montar a árvore a partir da polonesa:</b> leia de trás para a frente com uma pilha de subárvores. A partir da RPN: leia da esquerda para a direita, operando empilha folha, operador desempilha duas subárvores e vira pai delas.</li>
+      <li><b>Avaliar a árvore:</b> recursão pós-ordem: folha devolve o número; nó interno avalia esq, avalia dir e aplica o operador.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p1-exp1">
+    <div class="ihead"><span class="src">AVA aula 15 · 1 a 4</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Represente sob forma de árvore binária e escreva os percursos pré-ordem e pós-ordem:</p>
+    <ul class="sub">
+      <li><span class="m">1) 5 + (3*4) − (2+1)/2</span> &nbsp;&nbsp; <span class="m">2) (5+3)*4</span></li>
+      <li><span class="m">3) (3+4)*5 + 2 + 7*8</span> &nbsp;&nbsp; <span class="m">4) x = 5/a + (b − 1)</span></li>
+    </ul>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>1)</b> Último operador executado: o <span class="m">−</span> (os dois <span class="m">+</span>/<span class="m">−</span> têm a mesma prioridade e o <span class="m">−</span> está mais à direita).</p>
+      <div class="tree">        −
+      /   \
+     +     /
+    / \   / \
+   5   *  +  2
+      / \ / \
+     3  4 2  1</div>
+      <p>Pré: <span class="m">− + 5 * 3 4 / + 2 1 2</span>. Pós: <span class="m">5 3 4 * + 2 1 + 2 / −</span>. Valor: <span class="m">5 + 12 − 1,5 = 15,5</span>.</p>
+      <p><b>2)</b> Raiz <span class="m">*</span>, esquerda <span class="m">+(5, 3)</span>, direita 4. Pré: <span class="m">* + 5 3 4</span>. Pós: <span class="m">5 3 + 4 *</span>. Valor 32.</p>
+      <p><b>3)</b> Leia como <span class="m">((3+4)*5 + 2) + 7*8</span>: raiz é o <b>segundo</b> <span class="m">+</span>.</p>
+      <div class="tree">          +
+        /    \
+       +      *
+      / \    / \
+     *   2  7   8
+    / \
+   +   5
+  / \
+ 3   4</div>
+      <p>Pré: <span class="m">+ + * + 3 4 5 2 * 7 8</span>. Pós: <span class="m">3 4 + 5 * 2 + 7 8 * +</span>. Valor 93.</p>
+      <p><b>4)</b> A atribuição é o operador de menor prioridade: raiz <span class="m">=</span>, esquerda <span class="m">x</span>, direita <span class="m">+( /(5, a), −(b, 1) )</span>. Pré: <span class="m">= x + / 5 a − b 1</span>. Pós: <span class="m">x 5 a / b 1 − + =</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p1-pol">
+    <div class="ihead"><span class="src">AVA aula 15 · polonesas</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Monte a árvore binária e escreva a expressão de origem (e o valor):</p>
+    <ul class="sub">
+      <li>a) polonesa: <span class="m">/ + 10 20,5 * + 3 4 2</span></li>
+      <li>b) polonesa reversa: <span class="m">5 3 0,5 / * 4 3 9 − 2 / * +</span></li>
+    </ul>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> Pré-ordem: o primeiro símbolo é a raiz (<span class="m">/</span>). Depois vem a subárvore esquerda completa <span class="m">+ 10 20,5</span> e a direita <span class="m">* + 3 4 2</span>.</p>
+      <div class="tree">        /
+      /   \
+     +     *
+    / \   / \
+  10 20,5 +  2
+         / \
+        3   4</div>
+      <p class="res">(10 + 20,5) / ((3 + 4) * 2) = 30,5 / 14 ≈ 2,18</p>
+      <p><b>b)</b> Pilha: 5, 3, 0,5 → <span class="m">/</span> dá 6 → <span class="m">*</span> dá 30; 4, 3, 9 → <span class="m">−</span> dá −6; 2 → <span class="m">/</span> dá −3; <span class="m">*</span> dá −12; <span class="m">+</span> dá 18.</p>
+      <div class="tree">            +
+         /     \
+        *       *
+       / \     / \
+      5   /   4   /
+         / \     / \
+        3  0,5  −   2
+               / \
+              3   9</div>
+      <p class="res">5 * (3 / 0,5) + 4 * ((3 − 9) / 2) = 30 − 12 = 18</p>
+      <p class="note">Na RPN, quando aparece o operador, o <b>segundo</b> valor desempilhado é o operando da esquerda: em <span class="m">3 9 −</span>, a conta é 3 − 9, não 9 − 3.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p1-tde">
+    <div class="ihead"><span class="src">TDE · prazo 12/11 23:59</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Faça um programa que leia uma expressão já armazenada em uma árvore binária, escrevendo-a na forma normal totalmente parentizada (cada subexpressão tem dois operandos e um operador). Exemplo: <span class="m">(5+(3*4))</span> ou <span class="m">((5+3)*4)</span>.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>É um percurso central com dois acréscimos: abrir parêntese antes de descer à esquerda e fechar depois de voltar da direita. Folha (operando) só imprime o valor.</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+typedef struct no {
+    char info[16];          /* operador ("+") ou operando ("3", "20.5") */
+    struct no *esq, *dir;
+} TNo;
+
+TNo *criaNo(const char *s) {
+    TNo *n = malloc(sizeof(TNo));
+    strcpy(n-&gt;info, s);
+    n-&gt;esq = n-&gt;dir = NULL;
+    return n;
+}
+
+/* percurso central com parênteses em volta de cada subexpressão */
+void escreveParentizada(TNo *a) {
+    if (a == NULL) return;
+    if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir == NULL) {   /* folha: operando */
+        printf("%s", a-&gt;info);
+        return;
+    }
+    printf("(");
+    escreveParentizada(a-&gt;esq);
+    printf("%s", a-&gt;info);
+    escreveParentizada(a-&gt;dir);
+    printf(")");
+}
+
+/* bônus: avaliar a expressão (pós-ordem) */
+double avalia(TNo *a) {
+    if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir == NULL) return atof(a-&gt;info);
+    double e = avalia(a-&gt;esq), d = avalia(a-&gt;dir);
+    switch (a-&gt;info[0]) {
+        case '+': return e + d;
+        case '-': return e - d;
+        case '*': return e * d;
+        case '/': return e / d;
+    }
+    return 0;
+}
+
+int main(void) {
+    /* 5 + (3 * 4) */
+    TNo *r1 = criaNo("+");
+    r1-&gt;esq = criaNo("5");
+    r1-&gt;dir = criaNo("*");
+    r1-&gt;dir-&gt;esq = criaNo("3");
+    r1-&gt;dir-&gt;dir = criaNo("4");
+
+    /* (5 + 3) * 4 */
+    TNo *r2 = criaNo("*");
+    r2-&gt;esq = criaNo("+");
+    r2-&gt;esq-&gt;esq = criaNo("5");
+    r2-&gt;esq-&gt;dir = criaNo("3");
+    r2-&gt;dir = criaNo("4");
+
+    escreveParentizada(r1); printf(" = %g\n", avalia(r1));   /* (5+(3*4)) = 17 */
+    escreveParentizada(r2); printf(" = %g\n", avalia(r2));   /* ((5+3)*4) = 32 */
+    return 0;
+}</code></pre>
+      <p class="note">Se quiser ir além no TDE, monte a árvore a partir de uma RPN lida do teclado, com uma pilha de ponteiros: operando empilha <span class="m">criaNo</span>; operador desempilha dir, desempilha esq e empilha o novo pai.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 2 ============ -->
+<section class="step" data-s="2" data-tag="S1" data-label="Complexidade e pesquisa">
+  <div class="shead"><span class="day">Semana 1 · terça 10/11</span><span class="of"></span></div>
+  <h2>Complexidade, pesquisa sequencial e pesquisa binária</h2>
+  <p class="intro">Aula 11. A prova pede que você execute a pesquisa binária na mão, conte comparações e saiba dizer por que ela é O(log n) e por que não serve para lista encadeada.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Complexidade</b> conta operações fundamentais (comparações, trocas) em função do tamanho n da entrada, em geral no pior caso. Notação O.</li>
+      <li>Ordem, da melhor para a pior: <span class="m">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ)</span>. Até polinomial é tratável; exponencial é intratável.</li>
+      <li><b>Pesquisa sequencial:</b> compara um a um. Pior caso n comparações, O(n). Serve para dados desordenados e para listas encadeadas.</li>
+      <li><b>Pesquisa binária:</b> só em vetor <b>ordenado</b>. Olha o meio: achou, ou descarta metade. Pior caso <span class="m">⌈log₂(n+1)⌉</span> comparações, O(log n). Para n = 1000, 10 comparações; para 1 milhão, 20.</li>
+      <li>Código iterativo: <span class="m">inf = 0, sup = n−1; enquanto inf ≤ sup: meio = (inf+sup)/2; se chave == v[meio] achou; se chave &lt; v[meio] sup = meio−1 senão inf = meio+1</span>. Recursivo: mesma ideia com (e, d).</li>
+      <li><b>Lista encadeada</b> não tem acesso direto ao meio: chegar ao elemento central custa n/2 passos, o que destrói a vantagem. Por isso binária é para vetores.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p2-enade">
+    <div class="ihead"><span class="src">ENADE 2021 Q20</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Observe o código em C: <span class="m">funcao1(vetor, v)</span> percorre o vetor com um <span class="m">for</span> e devolve o índice i tal que <span class="m">vetor[i] == v</span> (ou −1). <span class="m">funcao2(vetor, v, i, f)</span> calcula <span class="m">m = (i+f)/2</span>; devolve m se <span class="m">v == vetor[m]</span>; devolve −1 se <span class="m">i ≥ f</span>; chama <span class="m">funcao2(vetor, v, m+1, f)</span> se <span class="m">v &gt; vetor[m]</span>, senão <span class="m">funcao2(vetor, v, i, m−1)</span>. Em <span class="m">main</span>, <span class="m">vetor = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19}</span> e a linha 24 imprime <span class="m">funcao1(vetor, 15)</span> e <span class="m">funcao2(vetor, 15, 0, 9)</span>.</p>
+    <ul class="sub">
+      <li>I. O resultado da impressão é 7 – 7.</li>
+      <li>II. A função funcao1, no pior caso, é uma estratégia mais rápida do que a funcao2.</li>
+      <li>III. A funcao2 implementa uma estratégia iterativa.</li>
+    </ul>
+    <p class="q">É correto o que se afirma em: A) I apenas; B) III apenas; C) I e II; D) II e III; E) I, II e III.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>I.</b> funcao1 é sequencial: 15 está no índice 7 → 7. funcao2 é binária: (0, 9) → m = 4, vetor[4] = 9 &lt; 15 → (5, 9) → m = 7, vetor[7] = 15 → 7. Imprime "7 – 7". <b>Verdadeira.</b></p>
+      <p><b>II.</b> No pior caso a sequencial faz n comparações e a binária ⌈log₂(n+1)⌉; a sequencial é mais <b>lenta</b>. <b>Falsa.</b></p>
+      <p><b>III.</b> funcao2 chama a si mesma: é recursiva. <b>Falsa.</b></p>
+      <p class="res">Alternativa A</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p2-tr1">
+    <div class="ihead"><span class="src">TR 1</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Vetor ordenado <span class="m">{2, 5, 8, 12, 16, 23, 38, 56, 72, 91}</span> (índices 0 a 9). a) Execute a pesquisa binária de 23 mostrando inf, sup e meio a cada passo e conte as comparações com a chave. b) Quantas comparações a pesquisa sequencial faria? c) Execute a binária para 40 (que não está no vetor).</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> inf 0, sup 9 → meio 4 (16): 23 &gt; 16, inf = 5. inf 5, sup 9 → meio 7 (56): 23 &lt; 56, sup = 6. inf 5, sup 6 → meio 5 (23): achou no índice 5. <span class="res">3 passos</span>.</p>
+      <p><b>b)</b> 23 é o 6º elemento: <span class="res">6 comparações</span>.</p>
+      <p><b>c)</b> meio 4 (16) &lt; 40 → inf 5; meio 7 (56) &gt; 40 → sup 6; meio 5 (23) &lt; 40 → inf 6; meio 6 (38) &lt; 40 → inf 7; agora inf 7 &gt; sup 6: <span class="res">devolve −1 após 4 passos</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p2-tr2">
+    <div class="ihead"><span class="src">TR 2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">a) Para n = 1 000 e n = 1 000 000, quantas comparações no pior caso fazem a pesquisa sequencial e a binária? b) Pesquisa binária poderia ser executada em listas encadeadas? Por quê? c) Ordene <span class="m">O(n log n), O(1), O(2ⁿ), O(n²), O(log n), O(n)</span> da melhor para a pior e diga qual é intratável.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> Sequencial: 1 000 e 1 000 000. Binária: <span class="m">⌈log₂ 1001⌉ = 10</span> e <span class="m">⌈log₂ 1 000 001⌉ = 20</span>.</p>
+      <p><b>b)</b> Dá para escrever, mas <b>não vale a pena</b>: a lista não tem acesso direto ao elemento do meio; para chegar nele é preciso percorrer n/2 nós, então cada passo custa O(n) e o total fica O(n), igual à sequencial, com mais trabalho.</p>
+      <p><b>c)</b> <span class="res">O(1), O(log n), O(n), O(n log n), O(n²), O(2ⁿ)</span>; a exponencial O(2ⁿ) é a intratável.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 3 ============ -->
+<section class="step" data-s="3" data-tag="S1" data-label="Tabelas hash">
+  <div class="shead"><span class="day">Semana 1 · quarta 11/11</span><span class="of"></span></div>
+  <h2>Tabelas hash: três formas de resolver colisão</h2>
+  <p class="intro">O exercício da aula 11 é o modelo exato do que cai: a mesma sequência de chaves inserida em hashing aberto, em buckets e em busca linear. Treine as três na mão, com a tabela desenhada.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li>Função hash leva a chave a um índice: a clássica é <span class="m">h(k) = k mod M</span> (resto da divisão pelo tamanho M). Ideal: O(1) para inserir e buscar.</li>
+      <li><b>Colisão:</b> duas chaves no mesmo índice. As implementações diferem só em como tratá-la.</li>
+      <li><b>Hashing aberto (encadeamento separado):</b> cada posição guarda uma lista encadeada; a colisão entra na lista daquela posição, na ordem de chegada.</li>
+      <li><b>Hashing fechado com busca linear:</b> tudo no vetor; colidiu, aplica o reespalhamento <span class="m">rh = (h + 1) mod M</span> até achar posição livre (continua de onde parou, dando a volta).</li>
+      <li><b>Hashing fechado com buckets:</b> a tabela é dividida em compartimentos de p posições; a função escolhe o bucket; bucket cheio manda para a área de overflow.</li>
+      <li><b>Tamanho bom:</b> número <b>primo</b>, não próximo de potência de 2, sem divisores primos menores que 20 (ex.: 23, 71). Par ou potência de 2 espalha mal.</li>
+      <li>Chave não numérica (nome): converta em número, por exemplo somando os códigos dos caracteres ou com <span class="m">h = h·33 + c</span>, e tire o mod M.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p3-hash-a">
+    <div class="ihead"><span class="src">AVA aula 11 · a</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Sequência: <span class="m">8 − 3 − 5 − 10 − 12 − 18 − 11 − 20 − 2 − 1 − 30 − 40 − 22 − 15</span>. Com <span class="m">H(n) = resto(n, 7)</span> e tabela de 7 posições, insira em <b>hashing aberto</b>, com as listas na ordem de entrada.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Restos: 8→1, 3→3, 5→5, 10→3, 12→5, 18→4, 11→4, 20→6, 2→2, 1→1, 30→2, 40→5, 22→1, 15→1.</p>
+      <div class="tw"><table>
+        <tr><th>Posição</th><th>Lista (ordem de entrada)</th></tr>
+        <tr><td>0</td><td>—</td></tr>
+        <tr><td>1</td><td>8 → 1 → 22 → 15</td></tr>
+        <tr><td>2</td><td>2 → 30</td></tr>
+        <tr><td>3</td><td>3 → 10</td></tr>
+        <tr><td>4</td><td>18 → 11</td></tr>
+        <tr><td>5</td><td>5 → 12 → 40</td></tr>
+        <tr><td>6</td><td>20</td></tr>
+      </table></div>
+      <p class="note">A posição 0 ficou vazia e a 1 tem quatro elementos: com M = 7 (primo) a distribuição ainda depende das chaves. Buscar 15 custa 4 comparações; buscar 7 custa 0 (lista vazia).</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p3-hash-b">
+    <div class="ihead"><span class="src">AVA aula 11 · b</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Mesma sequência em <b>hashing fechado com buckets</b>: 3 buckets de 5 posições cada, com overflow de 4 posições. <span class="note">(Com 3 buckets, a função natural é H(n) = resto(n, 3); se a professora indicar outra, refaça.)</span></p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Restos por 3: 8→2, 3→0, 5→2, 10→1, 12→0, 18→0, 11→2, 20→2, 2→2, 1→1, 30→0, 40→1, 22→1, 15→0.</p>
+      <div class="tw"><table>
+        <tr><th>Bucket</th><th>Conteúdo (5 posições)</th></tr>
+        <tr><td>0</td><td>3, 12, 18, 30, 15 (cheio)</td></tr>
+        <tr><td>1</td><td>10, 1, 40, 22, —</td></tr>
+        <tr><td>2</td><td>8, 5, 11, 20, 2 (cheio)</td></tr>
+        <tr><td>Overflow</td><td>—, —, —, — (não foi preciso)</td></tr>
+      </table></div>
+      <p class="note">Os buckets 0 e 2 encheram exatamente. Se entrasse mais um 21 (resto 0), ele iria para a primeira posição do overflow, e a busca por ele percorreria o bucket 0 inteiro e depois o overflow.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p3-hash-c">
+    <div class="ihead"><span class="src">AVA aula 11 · c</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Mesma sequência em <b>hashing fechado com busca linear</b>, tabela de 17 posições, <span class="m">H(n) = resto(n, 17)</span> e reespalhamento <span class="m">RH = resto(H(n) + 1, 17)</span>.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>8→8; 3→3; 5→5; 10→10; 12→12; 18→1; 11→11; 20→3 ocupado → 4; 2→2; 1→1 ocupado → 2 ocupado → 3 ocupado → 4 ocupado → 5 ocupado → <b>6</b>; 30→13; 40→6 ocupado → <b>7</b>; 22→5 ocupado → 6 → 7 → 8 → <b>9</b>; 15→15.</p>
+      <div class="tw"><table>
+        <tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th></tr>
+        <tr><td>—</td><td>18</td><td>2</td><td>3</td><td>20</td><td>5</td><td>1</td><td>40</td><td>8</td><td>22</td><td>10</td><td>11</td><td>12</td><td>30</td><td>—</td><td>15</td><td>—</td></tr>
+      </table></div>
+      <p class="note">Repare no <b>agrupamento</b>: a chave 1 andou cinco casas porque as posições 1 a 5 já estavam tomadas. Busca linear forma "trens" de posições ocupadas, e a busca por uma chave ausente só para ao achar uma posição vazia.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p3-tr3">
+    <div class="ihead"><span class="src">TR 3 · projeto (o seu TDE)</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">a) Entre 20, 32, 23 e 50, qual é o melhor tamanho para uma tabela hash e por quê? b) Proponha uma função hash para nomes de cidades (strings). c) No seu TDE você usou M = 71 e <span class="m">h = h·33 + c</span> com encadeamento: qual é o pior caso da busca, e como ele acontece?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> <span class="res">23</span>: é primo, não está perto de potência de 2 e não tem divisor primo menor que 20. 20 e 50 são pares (chaves pares caem só em posições pares); 32 é potência de 2 (o resto depende só dos 5 últimos bits).</p>
+      <p><b>b)</b> Converter o nome em número e tirar o resto: por exemplo somar os códigos ASCII dos caracteres, ou melhor, <span class="m">h = h·33 + c</span> para cada caractere (djb2), e no fim <span class="m">h mod M</span>. A multiplicação faz anagramas ("Roma" e "Amor") caírem em posições diferentes.</p>
+      <p><b>c)</b> Pior caso: todas as chaves na mesma lista, busca O(n). Acontece com função ruim (muitas colisões) ou tabela pequena demais em relação ao número de elementos (fator de carga alto). Com 55 cidades em 71 posições e boa função, as listas ficam com 1 ou 2 nós.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 4 ============ -->
+<section class="step" data-s="4" data-tag="S1" data-label="Ordenação simples">
+  <div class="shead"><span class="day">Semana 1 · quinta e sexta 12 e 13/11 · aula 16 (AVL) na sexta</span><span class="of"></span></div>
+  <h2>Bubblesort, inserção direta e seleção direta</h2>
+  <p class="intro">Aula 12. Os três métodos simples são O(n²), mas se comportam diferente: a prova costuma pedir para executar passo a passo e contar comparações e trocas, que é exatamente o exercício proposto na aula.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Bubblesort:</b> compara vizinhos e troca se estiverem fora de ordem; a cada passada o maior "borbulha" para o fim. n−1 passadas; na passada i, n−1−i comparações.</li>
+      <li><b>Seleção direta:</b> acha o menor do trecho não ordenado e troca com a primeira posição dele. Sempre <span class="m">n(n−1)/2</span> comparações e no máximo n−1 trocas: é o que faz <b>menos trocas</b>.</li>
+      <li><b>Inserção direta:</b> pega o próximo elemento e insere no lugar certo entre os já ordenados, deslocando os maiores. Poucos movimentos em dados quase ordenados; é o melhor dos três para entrada já ordenada (O(n)).</li>
+      <li>Entrada em ordem <b>decrescente</b> é o pior caso de todos: bubblesort e inserção fazem <span class="m">n(n−1)/2</span> trocas/deslocamentos.</li>
+      <li>Em <b>lista encadeada</b>: bubblesort e seleção trocam o campo <b>info</b> dos nós (mais simples que religar ponteiros); inserção direta constrói uma nova lista ordenada inserindo cada nó no lugar.</li>
+      <li>Todos são O(n²) no pior caso; para 1000 elementos são ~500 mil comparações.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p4-bubble">
+    <div class="ihead"><span class="src">TR 4 · bubblesort</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Execute o bubblesort (crescente) em <span class="m">[5, 3, 8, 1, 2]</span>, mostrando o vetor ao fim de cada passada, e conte comparações e trocas (na passada i, compare só as n−1−i primeiras duplas).</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <ul>
+        <li>Passada 1: (5,3) troca, (5,8) ok, (8,1) troca, (8,2) troca → <span class="m">[3, 5, 1, 2, 8]</span>: 4 comp., 3 trocas.</li>
+        <li>Passada 2: (3,5) ok, (5,1) troca, (5,2) troca → <span class="m">[3, 1, 2, 5, 8]</span>: 3 comp., 2 trocas.</li>
+        <li>Passada 3: (3,1) troca, (3,2) troca → <span class="m">[1, 2, 3, 5, 8]</span>: 2 comp., 2 trocas.</li>
+        <li>Passada 4: (1,2) ok: 1 comp., 0 trocas.</li>
+      </ul>
+      <p class="res">10 comparações e 7 trocas; resultado [1, 2, 3, 5, 8]</p>
+      <p class="note">Comparações são sempre <span class="m">4+3+2+1 = n(n−1)/2</span>; só as trocas dependem dos dados.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p4-select">
+    <div class="ihead"><span class="src">TR 5 · seleção direta</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Execute a seleção direta em <span class="m">[29, 10, 14, 37, 13]</span>, mostrando o vetor após cada troca, e conte comparações e trocas.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <ul>
+        <li>i = 0: menor de [29,10,14,37,13] é 10 → troca com 29 → <span class="m">[10, 29, 14, 37, 13]</span> (4 comp.).</li>
+        <li>i = 1: menor de [29,14,37,13] é 13 → troca com 29 → <span class="m">[10, 13, 14, 37, 29]</span> (3 comp.).</li>
+        <li>i = 2: menor de [14,37,29] é 14, já no lugar (2 comp., sem troca).</li>
+        <li>i = 3: menor de [37,29] é 29 → troca → <span class="m">[10, 13, 14, 29, 37]</span> (1 comp.).</li>
+      </ul>
+      <p class="res">10 comparações e 3 trocas</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p4-insert">
+    <div class="ihead"><span class="src">TR 6 · inserção direta</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Execute a inserção direta em <span class="m">[8, 3, 5, 1, 9]</span>, mostrando o vetor após inserir cada elemento, e conte comparações e deslocamentos.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <ul>
+        <li>Insere 3: compara com 8, desloca 8 → <span class="m">[3, 8, 5, 1, 9]</span> (1 comp., 1 desl.).</li>
+        <li>Insere 5: compara com 8 (desloca), com 3 (para) → <span class="m">[3, 5, 8, 1, 9]</span> (2 comp., 1 desl.).</li>
+        <li>Insere 1: compara com 8, 5, 3 (desloca os três) → <span class="m">[1, 3, 5, 8, 9]</span> (3 comp., 3 desl.).</li>
+        <li>Insere 9: compara com 8, para → sem deslocamento (1 comp.).</li>
+      </ul>
+      <p class="res">7 comparações e 5 deslocamentos</p>
+      <p class="note">Repare que o 9 custou uma comparação só: dados já quase ordenados são o melhor caso da inserção.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p4-ava">
+    <div class="ihead"><span class="src">AVA aula 12 · 1 a 3</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">1) Implemente um método simples usando lista encadeada. 2) Implemente o mesmo com vetor. 3) Ordene 1000 números aleatórios e 1000 em ordem decrescente com os dois, contando comparações e trocas. Antes de rodar, <b>preveja</b> os contadores para bubblesort e seleção nos dois cenários.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>Previsão para n = 1000</b> (<span class="m">n(n−1)/2 = 499 500</span>):</p>
+      <div class="tw"><table>
+        <tr><th>Método</th><th>Aleatório: comp. / trocas</th><th>Decrescente: comp. / trocas</th></tr>
+        <tr><td>Bubblesort</td><td>499 500 / ≈ 250 000</td><td>499 500 / 499 500</td></tr>
+        <tr><td>Seleção direta</td><td>499 500 / ≤ 999</td><td>499 500 / ≤ 999</td></tr>
+        <tr><td>Inserção direta</td><td>≈ 250 000 / ≈ 250 000 desl.</td><td>499 500 / 499 500 desl.</td></tr>
+      </table></div>
+      <p><b>Bubblesort em lista simples</b> (troca os campos info; os contadores são globais):</p>
+<pre><code>typedef struct no { int info; struct no *prox; } No;
+long comp = 0, trocas = 0;
+
+void bubbleLista(No *ini) {
+    int trocou = 1;
+    while (trocou) {
+        trocou = 0;
+        for (No *p = ini; p != NULL &amp;&amp; p-&gt;prox != NULL; p = p-&gt;prox) {
+            comp++;
+            if (p-&gt;info &gt; p-&gt;prox-&gt;info) {
+                int t = p-&gt;info; p-&gt;info = p-&gt;prox-&gt;info; p-&gt;prox-&gt;info = t;
+                trocas++; trocou = 1;
+            }
+        }
+    }
+}</code></pre>
+      <p>A versão com vetor é a mesma troca em <span class="m">v[j]</span> e <span class="m">v[j+1]</span>. Use <span class="m">srand(1)</span> antes de gerar, para os dois métodos receberem a mesma sequência. A diferença de tempo entre vetor e lista vem do acesso à memória, não do número de operações.</p>
+      <p class="note">Mesmo número de comparações e trocas nos dois: o algoritmo é o mesmo. É o que o exercício quer que você perceba.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 5 ============ -->
+<section class="step" data-s="5" data-tag="S1" data-label="Ordenação complexa e heap">
+  <div class="shead"><span class="day">Semana 1 · sábado 14/11</span><span class="of"></span></div>
+  <h2>Quicksort, shellsort, radixsort, mergesort e heapsort</h2>
+  <p class="intro">Slides da aula 12 e a questão discursiva do Enade sobre heap. Aqui a prova costuma dar uma sequência e pedir o estado após um passo (uma partição, um incremento do shellsort, uma passada do radix) ou a construção do heap.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Quicksort:</b> escolhe um pivô, particiona (menores à esquerda, maiores à direita, pivô no lugar definitivo) e recursa nas duas partes. Médio O(n log n); pior caso O(n²) (pivô sempre o menor/maior, como em dados já ordenados com pivô na ponta).</li>
+      <li><b>Shellsort:</b> inserção direta em sublistas com incremento h (8, 4, 2, 1); o último passo, com h = 1, é a inserção comum sobre dados quase ordenados. Complexidade entre O(n log n) e O(n²), tipicamente ~O(n^1,5).</li>
+      <li><b>Radixsort:</b> distribui em 10 filas pelo dígito das unidades, recolhe; depois pelas dezenas, recolhe; e assim por diante. Não compara chaves. O(n·k), k = número de dígitos.</li>
+      <li><b>Mergesort:</b> divide ao meio até sublistas de 1 e intercala ordenando. Sempre O(n log n), mas usa memória extra.</li>
+      <li><b>Heap máximo:</b> árvore binária em vetor em que todo pai ≥ filhos. Filhos de i: <span class="m">2i+1</span> e <span class="m">2i+2</span>; pai de i: <span class="m">(i−1)/2</span>. Não é ordenado, só "parcialmente".</li>
+      <li><b>Heapsort:</b> buildHeap (heapify do último pai, (n−1)/2, até 0), depois repete: troca raiz com último, diminui n, heapify(0). O(n log n), sem memória extra. heapify é O(log n) = altura da árvore.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p5-quick">
+    <div class="ihead"><span class="src">SL · quicksort</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Para <span class="m">72 6 57 88 85 42 83 73 48 60</span>, com o primeiro elemento como pivô, dê o vetor após a primeira partição (posição final do 72 e as duas partes) e o resultado final. Em que caso o quicksort degenera para O(n²)?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Tudo que é menor que 72 vai para a esquerda, o que é maior vai para a direita, e o 72 cai na posição 5 (há 5 menores):</p>
+      <p class="mb">[48 6 57 42 60] 72 [88 83 73 85]</p>
+      <p>Recursão nas duas partes (pivôs 48 e 88 em seguida, como nos slides) até sublistas de tamanho 1. Resultado: <span class="res">6 42 48 57 60 72 73 83 85 88</span>.</p>
+      <p>Degenera quando o pivô é sempre o menor ou o maior da parte: uma partição fica vazia e a outra com n−1 elementos, dando n níveis de recursão. Acontece com dados já ordenados (ou invertidos) e pivô na ponta. Remédio: pivô aleatório ou mediana de três.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p5-shell">
+    <div class="ihead"><span class="src">SL · shellsort e radixsort</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">a) Shellsort com incrementos 8, 4, 2, 1 em <span class="m">59 20 17 13 28 14 23 83 36 98 11 70 65 41 42 15</span>: qual o vetor após o passo de incremento 8? b) Radixsort em <span class="m">27 91 1 97 17 23 84 28 72 5 67 25</span>: qual a ordem após recolher da primeira distribuição (unidades)? E após a segunda (dezenas)?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> Com h = 8 formam-se 8 pares (posição i com i+8): (59,36), (20,98), (17,11), (13,70), (28,65), (14,41), (23,42), (83,15). Ordena cada par: <span class="res">36 20 11 13 28 14 23 15 59 98 17 70 65 41 42 83</span>. Depois, h = 4: <span class="m">28 14 11 13 36 20 17 15 59 41 23 70 65 98 42 83</span>; h = 2: <span class="m">11 13 17 14 23 15 28 20 36 41 42 70 59 83 65 98</span>; h = 1 termina.</p>
+      <p><b>b)</b> Unidades (filas 0 a 9): 1: 91, 1; 2: 72; 3: 23; 4: 84; 5: 5, 25; 7: 27, 97, 17, 67; 8: 28. Recolhendo: <span class="res">91 1 72 23 84 5 25 27 97 17 67 28</span>. Dezenas: 0: 1, 5; 1: 17; 2: 23, 25, 27, 28; 6: 67; 7: 72; 8: 84; 9: 91, 97. Recolhendo: <span class="res">1 5 17 23 25 27 28 67 72 84 91 97</span> (já ordenado, pois o maior tem 2 dígitos).</p>
+      <p class="note">No radix, a ordem dentro de cada fila é a ordem de chegada (fila é FIFO). É isso que preserva o resultado da passada anterior.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p5-merge">
+    <div class="ihead"><span class="src">SL · mergesort</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Mostre a divisão e as intercalações do mergesort em <span class="m">36 20 17 13 28 14 23 15</span>. Quantos níveis de divisão há para 8 elementos? E para 1024?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tree">dividir:  [36 20 17 13 28 14 23 15]
+          [36 20 17 13] [28 14 23 15]
+          [36 20] [17 13] [28 14] [23 15]
+          36 20 17 13 28 14 23 15
+intercalar: [20 36] [13 17] [14 28] [15 23]
+            [13 17 20 36] [14 15 23 28]
+            [13 14 15 17 20 23 28 36]</div>
+      <p><span class="m">log₂ 8 = 3</span> níveis; para 1024, <span class="m">log₂ 1024 = 10</span>. Cada nível intercala n elementos: O(n log n).</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p5-heap">
+    <div class="ihead"><span class="src">ENADE 2021 · discursiva 05</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Um heap binário é um arranjo visto como árvore binária (filhos de i em 2i+1 e 2i+2). <span class="m">heapify(a, n, i)</span> compara a[i] com os filhos, troca com o maior se preciso e desce recursivamente; <span class="m">buildHeap(a, n)</span> chama heapify para i de (n−1)/2 até 0.</p>
+    <ul class="sub">
+      <li>a) Como fica <span class="m">a[] = {2, 5, 8, 13, 21, 1, 3, 34}</span> após <span class="m">buildHeap(a, 8)</span>?</li>
+      <li>b) Qual a complexidade de tempo no pior caso de heapify (O ou Θ)?</li>
+    </ul>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> n = 8, começa em i = 3.</p>
+      <ul>
+        <li>i = 3: a[3] = 13, filho 7 (34) é maior → troca → <span class="m">{2, 5, 8, 34, 21, 1, 3, 13}</span>.</li>
+        <li>i = 2: a[2] = 8, filhos 5 (1) e 6 (3) → já é o maior.</li>
+        <li>i = 1: a[1] = 5, filhos 3 (34) e 4 (21) → troca com 34 → <span class="m">{2, 34, 8, 5, 21, 1, 3, 13}</span>; desce em 3: a[3] = 5, filho 7 (13) → troca → <span class="m">{2, 34, 8, 13, 21, 1, 3, 5}</span>.</li>
+        <li>i = 0: a[0] = 2, filhos 1 (34) e 2 (8) → troca com 34 → <span class="m">{34, 2, 8, 13, 21, 1, 3, 5}</span>; desce em 1: a[1] = 2, filhos 3 (13) e 4 (21) → troca com 21 → <span class="m">{34, 21, 8, 13, 2, 1, 3, 5}</span>; desce em 4: sem filhos.</li>
+      </ul>
+      <p class="res">{34, 21, 8, 13, 2, 1, 3, 5}</p>
+      <p>Confira: 34 ≥ 21, 8; 21 ≥ 13, 2; 8 ≥ 1, 3; 13 ≥ 5. É heap máximo (e não está ordenado).</p>
+      <p><b>b)</b> heapify desce no máximo um caminho da raiz até uma folha: a altura da árvore, <span class="m">⌊log₂ n⌋</span>. <span class="res">O(log n)</span> no pior caso (Θ(log n) quando o elemento desce até a folha).</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p5-tab">
+    <div class="ihead"><span class="src">TR 7 · comparação</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Monte a tabela de complexidade (melhor, médio, pior) dos oito métodos e responda: qual tem pior caso O(n²) apesar de médio O(n log n)? Quais garantem O(n log n) sempre? Qual não compara chaves?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tw"><table>
+        <tr><th>Método</th><th>Melhor</th><th>Médio</th><th>Pior</th><th>Observação</th></tr>
+        <tr><td>Bubblesort</td><td>O(n)*</td><td>O(n²)</td><td>O(n²)</td><td>*com teste de "trocou"</td></tr>
+        <tr><td>Inserção direta</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>ótimo para quase ordenado</td></tr>
+        <tr><td>Seleção direta</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>menos trocas (≤ n−1)</td></tr>
+        <tr><td>Shellsort</td><td>O(n log n)</td><td>~O(n^1,5)</td><td>O(n²)</td><td>depende dos incrementos</td></tr>
+        <tr><td>Quicksort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>pivô ruim degenera</td></tr>
+        <tr><td>Mergesort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>memória extra O(n)</td></tr>
+        <tr><td>Heapsort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>sem memória extra</td></tr>
+        <tr><td>Radixsort</td><td>O(n·k)</td><td>O(n·k)</td><td>O(n·k)</td><td>não compara chaves</td></tr>
+      </table></div>
+      <p class="res">Quicksort tem pior caso O(n²); mergesort e heapsort garantem O(n log n); radixsort não compara.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 6 ============ -->
+<section class="step" data-s="6" data-tag="S1" data-label="Revisão da semana 1">
+  <div class="shead"><span class="day">Semana 1 · domingo 15/11</span><span class="of"></span></div>
+  <h2>Refazer os ✗ da semana 1</h2>
+  <p class="intro">Tudo que você marcou com ✗ nos passos 1 a 5. Refaça no papel, do zero. Quando acertar, volte ao passo de origem e troque a marca para ✓.</p>
+  <div data-xlist data-xfrom="1" data-xto="5" data-xempty="Nenhum ✗ nos passos 1 a 5. Se ainda não marcou nada, volte e marque conforme resolve: é isto que alimenta esta lista."></div>
+  <div class="box"><h3>O que você precisou consultar</h3>
+    <p class="note">Anote aqui toda regra ou fórmula que teve que buscar (índices do heap, ordem de prioridade, reespalhamento…). Esta lista reaparece no passo 14 como rascunho do resumo da prova. Salva sozinho.</p>
+    <textarea id="notaFormulas" placeholder="Ex.: filhos de i = 2i+1 e 2i+2; pior caso do quicksort; busca linear: (h+1) mod M…"></textarea>
+  </div>
+</section>
+<!-- ============ PASSO 7 ============ -->
+<section class="step" data-s="7" data-tag="S2" data-label="Árvores: conceitos">
+  <div class="shead"><span class="day">Semana 2 · segunda 16/11</span><span class="of"></span></div>
+  <h2>Árvores: terminologia e representações</h2>
+  <p class="intro">Aula 13. Antes de qualquer algoritmo, a prova cobra vocabulário: raiz, folha, grau, nível, profundidade, caminho. E as duas transformações (n-ária ↔ binária), que caem como desenho.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Raiz</b> não tem antecessor; <b>folha</b> (terminal) não tem filhos; <b>nó interno</b> tem ao menos um filho. <b>Irmãos</b> têm o mesmo pai.</li>
+      <li><b>Grau</b> de um nó = número de filhos (subárvores). Grau da árvore = maior grau de nó.</li>
+      <li><b>Caminho</b> entre dois nós: sequência de nós ligados pai-filho. <b>Comprimento</b> = número de nós menos um (= número de arestas).</li>
+      <li><b>Profundidade</b> de um nó = comprimento do caminho da raiz até ele. Todos os nós de profundidade k estão no <b>nível</b> k (raiz no nível 0). Profundidade máxima da árvore = maior nível.</li>
+      <li><b>Árvore binária:</b> grau ≤ 2, e é ordenada: filho à esquerda é diferente de filho à direita. <b>Floresta:</b> conjunto de árvores disjuntas.</li>
+      <li><b>Representações:</b> array sequencial (nó, nº de filhos, …); array por pai (posição i guarda o índice do pai); listas de filhos (vetor de nós + lista encadeada dos filhos); encadeamento de nós (cada nó tem campos de ponteiro para os filhos).</li>
+      <li><b>n-ária → binária:</b> ligue os irmãos; apague as ligações pai-filho exceto com o primeiro filho. Filho esquerdo = primeiro filho real; filho direito = próximo irmão. O inverso desfaz.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p7-ex2">
+    <div class="ihead"><span class="src">AVA aula 13 · 2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Dada a árvore: 1 tem filhos 2, 3 e 4; 2 tem filhos 5 e 6; 5 tem filhos 8 e 9; 6 tem filho 10. Responda:</p>
+    <div class="tree">        1
+      / | \
+     2  3  4
+    / \
+   5   6
+  / \   |
+ 8   9  10</div>
+    <ul class="sub">
+      <li>a) folhas; b) raiz; c) pai de 5; d) irmãos de 3; e) grau de 3; f) nível de 10; g) profundidade de 10; h) caminho entre 1 e 8 e seu comprimento; i) antecessor direto de 5; j) antecessores de 6; k) profundidade máxima.</li>
+    </ul>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>a) 8, 9, 10, 3 e 4. &nbsp; b) 1. &nbsp; c) 2. &nbsp; d) 2 e 4. &nbsp; e) 0 (é folha). &nbsp; f) 3. &nbsp; g) 3 (nível e profundidade são o mesmo número). &nbsp; h) 1-2-5-8, comprimento 3. &nbsp; i) 2. &nbsp; j) 2 e 1 (antecessor direto e indireto). &nbsp; k) 3.</p>
+      <p class="note">Grau do nó 1 é 3, então a árvore é ternária (grau 3), não binária.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p7-ex1">
+    <div class="ihead"><span class="src">AVA aula 13 · 1</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Desenhe uma árvore n-ária com números de 0 a 100 (sem repetir) em que: a raiz é 3; 10 é irmão de 20 e 30 e pai de 2; o caminho entre 3 e 70 é 3-10-7-70; 70, 60 e 50 são folhas; o grau de 10 é três; 80 está no nível 3; a profundidade máxima é quatro.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Uma solução (há várias):</p>
+      <div class="tree">          3
+       /  |  \
+     10   20  30
+    / | \   \
+   2  7  60  50
+     / \
+   70   80
+         \
+          90</div>
+      <p>Confira cada condição: 10, 20 e 30 são irmãos (filhos de 3); 10 tem três filhos (2, 7, 60), grau três, e é pai de 2; 3-10-7-70 é o caminho; 70, 60 e 50 são folhas; 80 está no nível 3 (3 → 10 → 7 → 80); 90 no nível 4 dá a profundidade máxima quatro.</p>
+      <p class="note">O 80 não pode ser folha obrigatoriamente, mas <b>alguém</b> precisa estar no nível 4. Pendurar o 90 no 80 resolve sem quebrar as outras regras.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p7-ex3">
+    <div class="ihead"><span class="src">AVA aula 13 · 3 e 4</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q"><b>3)</b> Transforme em binária a n-ária: A tem filhos B, C e D; B tem filhos E, F e G; C tem filho H; D tem filho I. &nbsp; <b>4)</b> Transforme em n-ária a binária: J tem esquerdo K e direito L; K tem esquerdo M e direito N; L tem esquerdo O e direito P; M tem esquerdo Q e direito R; R tem direito S.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>3)</b> Esquerda = primeiro filho, direita = irmão seguinte:</p>
+      <div class="tree">A
+└─esq: B
+       ├─esq: E ─dir: F ─dir: G
+       └─dir: C
+              ├─esq: H
+              └─dir: D
+                     └─esq: I</div>
+      <p>Ou seja: A.esq = B; B.esq = E, B.dir = C; E.dir = F; F.dir = G; C.esq = H, C.dir = D; D.esq = I.</p>
+      <p><b>4)</b> Leia ao contrário: filho esquerdo é filho de verdade; filho direito é irmão. L é irmão de K, então J tem filhos <b>K e L</b>. N é irmão de M: K tem filhos <b>M e N</b>. P é irmão de O: L tem filhos <b>O e P</b>. R é irmão de Q e S é irmão de R: M tem filhos <b>Q, R e S</b>.</p>
+      <div class="tree">        J
+      /   \
+     K     L
+    / \   / \
+   M   N O   P
+ / | \
+Q  R  S</div>
+      <p class="note">Nos dois sentidos, a pergunta a fazer para cada ponteiro é: "é esquerdo (filho) ou direito (irmão)?".</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p7-tr8">
+    <div class="ihead"><span class="src">TR 8 · representações</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Para a árvore do exercício 2 (nós 1, 2, 3, 4, 5, 6, 8, 9, 10), escreva: a) a representação sequencial em array (nó seguido do número de filhos, em pré-ordem); b) a representação por pai (índices 1 a 9 na ordem 1, 2, 3, 4, 5, 6, 8, 9, 10). c) Qual vantagem e qual desvantagem de cada uma?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> <span class="m">1 3 2 2 5 2 8 0 9 0 6 1 10 0 3 0 4 0</span>.</p>
+      <p><b>b)</b> índices: 1→1, 2→2, 3→3, 4→4, 5→5, 6→6, 7→8, 8→9, 9→10. Pais: <span class="m">0 1 1 1 2 2 5 5 6</span> (posição 7, que é o nó 8, guarda 5, o índice do nó 5; posição 9, que é o nó 10, guarda 6).</p>
+      <p><b>c)</b> Sequencial: boa para gravar em arquivo; ruim para inserir, remover e achar o pai. Por pai: acha o pai em O(1); ruim para achar os filhos (precisa varrer o vetor) e para inserir/remover. Listas de filhos: flexível para filhos, mas o número de nós é limitado pelo vetor. Encadeamento de nós: mais flexível, mas desperdiça ponteiros vazios quando o grau máximo é grande, daí a conversão para binária.</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 8 ============ -->
+<section class="step" data-s="8" data-tag="S2" data-label="Caminhamentos">
+  <div class="shead"><span class="day">Semana 2 · terça 17/11</span><span class="of"></span></div>
+  <h2>Caminhamentos: pré, central e pós, à esquerda e à direita</h2>
+  <p class="intro">Aulas 13 e 14. Seis sequências a partir da mesma árvore, mais o percurso em largura. A prova pede as sequências e, às vezes, o contrário: dada a sequência (ou duas), reconstruir a árvore.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li>Três operações: <b>visitar</b> o nó (V), percorrer a subárvore <b>esquerda</b> (E), percorrer a <b>direita</b> (D). O tipo é a ordem delas: pré-fixado <b>V E D</b>, central <b>E V D</b>, pós-fixado <b>E D V</b>. Tudo recursivo: em cada subárvore recomeça.</li>
+      <li>Versões <b>à direita</b> trocam E e D: pré-dir V D E, central-dir D V E, pós-dir D E V. O central à direita é o central à esquerda lido de trás para a frente; o mesmo vale entre pré-esq e pós-dir.</li>
+      <li><b>Em largura</b> (nível a nível): raiz, depois os filhos, depois os netos. Implementa-se com <b>fila</b>. O pré-fixado iterativo usa <b>pilha</b> (empilha o direito antes do esquerdo).</li>
+      <li>Truque para ler rápido: pré-fixado = a ordem em que você "chega" nos nós; pós-fixado = a ordem em que "sai" deles; central = a ordem da esquerda para a direita no desenho.</li>
+      <li><b>Reconstruir:</b> pré (ou pós) + central determinam a árvore. O primeiro do pré é a raiz; no central, o que está à esquerda da raiz é a subárvore esquerda.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p8-sl">
+    <div class="ihead"><span class="src">SL aula 14 · exercício</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Para a árvore abaixo, escreva os seis caminhamentos (pré, central e pós, à esquerda e à direita) e o percurso em largura.</p>
+    <div class="tree">          8
+        /   \
+       3     10
+      / \      \
+     1   6      14
+        / \     /
+       4   7   13</div>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tw"><table>
+        <tr><th>Caminhamento</th><th>À esquerda</th><th>À direita</th></tr>
+        <tr><td>Pré-fixado</td><td class="c">8 3 1 6 4 7 10 14 13</td><td class="c">8 10 14 13 3 6 7 4 1</td></tr>
+        <tr><td>Central</td><td class="c">1 3 4 6 7 8 10 13 14</td><td class="c">14 13 10 8 7 6 4 3 1</td></tr>
+        <tr><td>Pós-fixado</td><td class="c">1 4 7 6 3 13 14 10 8</td><td class="c">13 14 10 7 4 6 1 3 8</td></tr>
+      </table></div>
+      <p>Em largura: <span class="res">8 3 10 1 6 14 4 7 13</span>.</p>
+      <p class="note">O central à esquerda saiu <b>ordenado</b> (1 3 4 6 7 8 10 13 14): esta árvore é uma ABP. É a propriedade que o passo 9 usa.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p8-func">
+    <div class="ihead"><span class="src">AVA aula 14 · func1 e func2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">O que fazem as funções? <span class="m">func1(n)</span>: se n ≠ null, empilha(n); enquanto a pilha não está vazia: n = desempilha(); escreve(n); se n.dir ≠ null empilha(n.dir); se n.esq ≠ null empilha(n.esq). <span class="m">func2(n)</span>: igual, mas com fila (enfileira/desenfileira) e enfileirando primeiro esq, depois dir. Dê a saída de cada uma na árvore do exercício anterior.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>func1</b> é o <b>pré-fixado à esquerda, iterativo</b>: a pilha faz o papel da recursão. Empilha o direito antes do esquerdo para que o esquerdo saia primeiro. Saída: <span class="res">8 3 1 6 4 7 10 14 13</span>.</p>
+      <p><b>func2</b> é o <b>percurso em largura</b> (nível a nível): a fila garante que todos os nós de um nível saem antes dos do seguinte. Saída: <span class="res">8 3 10 1 6 14 4 7 13</span>.</p>
+      <p class="note">Pilha → profundidade; fila → largura. Se a func1 empilhasse esq antes de dir, viraria pré-fixado à direita.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p8-tr9">
+    <div class="ihead"><span class="src">TR 9 · reconstruir</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Uma árvore binária tem pré-fixado <span class="m">A B D E C F</span> e central <span class="m">D B E A F C</span>. Desenhe a árvore e dê o pós-fixado.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Raiz = primeiro do pré: A. No central, à esquerda de A está <span class="m">D B E</span> (subárvore esquerda) e à direita <span class="m">F C</span>. No pré, depois de A vem B: raiz da esquerda, com D à esquerda e E à direita. Da direita, o pré dá C como raiz; no central F está antes de C, logo F é filho esquerdo de C.</p>
+      <div class="tree">      A
+     / \
+    B   C
+   / \  /
+  D   E F</div>
+      <p class="res">Pós-fixado: D E B F C A</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 9 ============ -->
+<section class="step" data-s="9" data-tag="S2" data-label="ABP">
+  <div class="shead"><span class="day">Semana 2 · quarta 18/11</span><span class="of"></span></div>
+  <h2>Árvore binária de pesquisa: inserir, buscar, remover</h2>
+  <p class="intro">Aulas 14 e 15. É o tema central da prova: inserir uma sequência, desenhar, percorrer e, principalmente, <b>remover</b> mantendo a ordem. Os exercícios da apostila de ABP são exatamente o tipo que cai.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Propriedade:</b> tudo na subárvore esquerda de k é menor que k; tudo na direita é maior (ou igual, conforme a convenção). Consequência: o <b>central</b> sai em ordem crescente.</li>
+      <li><b>Inserir:</b> desce comparando (menor → esquerda, maior → direita) até um ponteiro nulo e pendura ali. O inserido é sempre folha. A forma da árvore depende da <b>ordem</b> de inserção.</li>
+      <li><b>Buscar (existe):</b> mesma descida; chegou em nulo, não está. Custo = profundidade do nó; numa árvore degenerada (inserção ordenada) vira lista, O(n).</li>
+      <li><b>Remover</b> um nó: (1) sem filhos: apaga; (2) um filho: o filho sobe para o lugar dele; (3) dois filhos: substitui pelo <b>maior da esquerda</b> (desce à esquerda, depois sempre à direita) ou pelo <b>menor da direita</b> (desce à direita, depois sempre à esquerda) e remove esse substituto de onde estava.</li>
+      <li>O substituto de dois filhos nunca tem dois filhos (o maior da esquerda não tem filho direito), então a remoção dele cai no caso 1 ou 2.</li>
+      <li>Em C, inserção recursiva: <span class="m">if (a == NULL) return criaNo(v); if (v &lt; a-&gt;info) a-&gt;esq = insere(a-&gt;esq, v); else a-&gt;dir = insere(a-&gt;dir, v); return a;</span> (o seu abp.c).</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p9-ins">
+    <div class="ihead"><span class="src">SL aula 14 · inserção</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">10 – 8 – 11 – 5 – 2 – 9 – 15 – 7 – 6 – 12 – 20</span>, nessa ordem, em uma ABP vazia. Desenhe a árvore e escreva os caminhamentos central, pré e pós (à esquerda). Quantas comparações faz a busca por 6? E por 13?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tree">          10
+        /    \
+       8      11
+      / \       \
+     5   9       15
+    / \         /  \
+   2   7      12    20
+      /
+     6</div>
+      <p>Central: <span class="res">2 5 6 7 8 9 10 11 12 15 20</span> (ordenado). Pré: <span class="m">10 8 5 2 7 6 9 11 15 12 20</span>. Pós: <span class="m">2 6 7 5 9 8 12 20 15 11 10</span>.</p>
+      <p>Busca por 6: compara com 10, 8, 5, 7, 6 → <span class="res">5 comparações</span>. Busca por 13: 10, 11, 15, 12, depois 12.dir é nulo → <span class="res">4 comparações e "não existe"</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p9-rem">
+    <div class="ihead"><span class="src">SL aula 15 · remoção 1 e 2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Dada a ABP abaixo: 1) redesenhe após remover o 150; 2) redesenhe a árvore original após remover o 300, (a) promovendo o menor valor à direita e (b) promovendo o maior valor à esquerda.</p>
+    <div class="tree">                 200
+             /         \
+          100           300
+         /   \         /   \
+       80    150     250    400
+            /       /  \    /  \
+          120     220  270 350  500
+         /   \         /
+       110   130     260</div>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>1)</b> 150 tem só o filho esquerdo (120): o 120 sobe para o lugar dele, trazendo 110 e 130.</p>
+      <div class="tree">          100
+         /   \
+       80    120
+            /   \
+          110   130</div>
+      <p>(o resto da árvore não muda).</p>
+      <p><b>2a)</b> Menor da direita de 300: desce em 400 e vai à esquerda até o fim: <b>350</b>. 350 ocupa o lugar de 300 e sai de onde estava (era folha).</p>
+      <div class="tree">          350
+         /   \
+       250    400
+      /  \       \
+    220  270     500
+         /
+       260</div>
+      <p><b>2b)</b> Maior da esquerda de 300: desce em 250 e vai à direita até o fim: <b>270</b>. 270 ocupa o lugar de 300; como 270 tinha o filho esquerdo 260, o 260 sobe para o lugar de 270.</p>
+      <div class="tree">          270
+         /   \
+       250    400
+      /  \    /  \
+    220  260 350  500</div>
+      <p class="note">Nos dois casos o central continua ordenado: 220 250 260 270 350 400 500. É o teste de que a remoção está certa.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p9-cam">
+    <div class="ihead"><span class="src">SL aula 15 · remoção 3</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Sobre a árvore original (com 200 na raiz), escreva os caminhamentos central, pré e pós-fixado, à esquerda e à direita.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tw"><table>
+        <tr><th></th><th>À esquerda</th><th>À direita</th></tr>
+        <tr><td>Central</td><td class="c">80 100 110 120 130 150 200 220 250 260 270 300 350 400 500</td><td class="c">500 400 350 300 270 260 250 220 200 150 130 120 110 100 80</td></tr>
+        <tr><td>Pré</td><td class="c">200 100 80 150 120 110 130 300 250 220 270 260 400 350 500</td><td class="c">200 300 400 500 350 250 270 260 220 100 150 120 130 110 80</td></tr>
+        <tr><td>Pós</td><td class="c">80 110 130 120 150 100 220 260 270 250 350 500 400 300 200</td><td class="c">500 350 400 260 270 220 250 300 130 110 120 150 80 100 200</td></tr>
+      </table></div>
+      <p class="note">Confira as simetrias: central-dir é o central-esq invertido; pós-dir é o pré-esq invertido.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p9-tr10">
+    <div class="ihead"><span class="src">TR 10</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">a) Insira <span class="m">1, 2, 3, 4, 5</span> nessa ordem numa ABP e desenhe. Qual a profundidade? Quantas comparações para buscar o 5? b) Em que ordem você inseriria os mesmos valores para a árvore ficar o mais baixa possível? c) Por que isso motiva a AVL?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p><b>a)</b> Cada novo é maior que todos: vai sempre para a direita. A árvore vira uma "lista" inclinada: 1 → 2 → 3 → 4 → 5, profundidade 4. Buscar 5 custa <span class="res">5 comparações</span>, igual à pesquisa sequencial.</p>
+      <p><b>b)</b> Comece pelo do meio e repita nas metades: <span class="res">3, 1, 5, 2, 4</span> (ou 3, 5, 1, 4, 2…). Fica 3 na raiz, 1 e 5 filhos, 2 e 4 netos: profundidade 2, busca em no máximo 3 comparações.</p>
+      <p><b>c)</b> A ABP só é O(log n) se ficar balanceada, e a ordem de chegada dos dados não é controlável. A AVL rebalanceia a cada inserção com rotações, garantindo altura O(log n).</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 10 ============ -->
+<section class="step" data-s="10" data-tag="S2" data-label="Implementação">
+  <div class="shead"><span class="day">Semana 2 · quinta 19/11</span><span class="of"></span></div>
+  <h2>Implementar: operações sobre árvore binária em C</h2>
+  <p class="intro">A lista de exercícios da aula 14. Todas seguem o mesmo molde dos percursos: caso base <span class="m">a == NULL</span>, faz algo com o nó, recursão nas duas subárvores. Escreva cada função, compile e teste com a árvore do passo 9.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li>Molde recursivo: <span class="m">if (a == NULL) return caso_base; … f(a-&gt;esq) … f(a-&gt;dir) …</span>. Decida o que o nó devolve (um número, um ponteiro) e como combina com os filhos.</li>
+      <li><b>Folha:</b> <span class="m">a-&gt;esq == NULL &amp;&amp; a-&gt;dir == NULL</span>. <b>Dois filhos:</b> os dois diferentes de NULL.</li>
+      <li><b>Altura / níveis:</b> <span class="m">1 + max(altura(esq), altura(dir))</span>, com NULL valendo 0. Número de níveis = altura contada em nós.</li>
+      <li><b>Pai de um valor:</b> na descida, antes de ir para o filho, teste se o filho é o valor procurado; se for, o nó atual é o pai.</li>
+      <li>Em ABP, qualquer "em ordem decrescente" é o <b>central à direita</b> (dir, visita, esq), como no seu <span class="m">imparesDecrescente</span>.</li>
+      <li>Libere a memória no fim com um pós-ordem (<span class="m">libera(esq); libera(dir); free(a)</span>): nunca libere o nó antes dos filhos.</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p10-l1">
+    <div class="ihead"><span class="src">AVA aula 14 · 1 e 2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Com <span class="m">typedef struct noA { int info; struct noA *esq, *dir; } TNoA;</span> 1) implemente os percursos pré-fixado, central e pós-fixado à esquerda e à direita; 2) implemente uma operação que escreva a soma dos números que estão nos nós-folha.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+<pre><code>void preEsq(TNoA *a) { if (a) { printf("%d ", a-&gt;info); preEsq(a-&gt;esq); preEsq(a-&gt;dir); } }
+void preDir(TNoA *a) { if (a) { printf("%d ", a-&gt;info); preDir(a-&gt;dir); preDir(a-&gt;esq); } }
+void centralEsq(TNoA *a) { if (a) { centralEsq(a-&gt;esq); printf("%d ", a-&gt;info); centralEsq(a-&gt;dir); } }
+void centralDir(TNoA *a) { if (a) { centralDir(a-&gt;dir); printf("%d ", a-&gt;info); centralDir(a-&gt;esq); } }
+void posEsq(TNoA *a) { if (a) { posEsq(a-&gt;esq); posEsq(a-&gt;dir); printf("%d ", a-&gt;info); } }
+void posDir(TNoA *a) { if (a) { posDir(a-&gt;dir); posDir(a-&gt;esq); printf("%d ", a-&gt;info); } }
+
+int somaFolhas(TNoA *a) {
+    if (a == NULL) return 0;
+    if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir == NULL) return a-&gt;info;   /* folha */
+    return somaFolhas(a-&gt;esq) + somaFolhas(a-&gt;dir);
+}</code></pre>
+      <p>Na ABP do passo 9 (10, 8, 11, 5, 2, 9, 15, 7, 6, 12, 20) as folhas são 2, 6, 9, 12 e 20: soma <span class="res">49</span>. Use isso como teste.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p10-l3">
+    <div class="ihead"><span class="src">AVA aula 14 · 3 e 4</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">3) Escreva os nós que têm dois filhos. 4) Escreva quantos níveis tem a árvore.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+<pre><code>void doisFilhos(TNoA *a) {
+    if (a == NULL) return;
+    if (a-&gt;esq != NULL &amp;&amp; a-&gt;dir != NULL) printf("%d\n", a-&gt;info);
+    doisFilhos(a-&gt;esq);
+    doisFilhos(a-&gt;dir);
+}
+
+int niveis(TNoA *a) {              /* altura contada em nós; vazia = 0 */
+    if (a == NULL) return 0;
+    int e = niveis(a-&gt;esq), d = niveis(a-&gt;dir);
+    return 1 + (e &gt; d ? e : d);
+}</code></pre>
+      <p>Teste: na ABP do passo 9, nós com dois filhos são 10, 8, 5 e 15; níveis = 5 (10 → 8 → 5 → 7 → 6).</p>
+      <p class="note">Se a professora contar níveis a partir de 0 (raiz no nível 0), o "maior nível" é <span class="m">niveis(a) − 1</span>. Diga qual convenção usou.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p10-l5">
+    <div class="ihead"><span class="src">AVA aula 14 · 5 e 6</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">5) Receba um valor e, se ele estiver na árvore, escreva o valor do seu pai. 6) Em uma ABP de inteiros, escreva os ímpares em ordem decrescente (o seu TDE de ABP).</p>
+    <details class="ans"><summary>Resposta</summary><div>
+<pre><code>/* devolve o nó pai de v, ou NULL (v ausente ou v é a raiz) */
+TNoA *pai(TNoA *a, int v) {
+    if (a == NULL) return NULL;
+    if ((a-&gt;esq &amp;&amp; a-&gt;esq-&gt;info == v) || (a-&gt;dir &amp;&amp; a-&gt;dir-&gt;info == v)) return a;
+    TNoA *p = pai(a-&gt;esq, v);
+    return p ? p : pai(a-&gt;dir, v);
+}
+/* uso: TNoA *p = pai(raiz, 7); if (p) printf("pai de 7: %d\n", p-&gt;info);
+   else if (raiz &amp;&amp; raiz-&gt;info == 7) printf("7 e a raiz\n"); else printf("7 nao esta na arvore\n"); */
+
+void imparesDecrescente(TNoA *a) {       /* central à direita */
+    if (a != NULL) {
+        imparesDecrescente(a-&gt;dir);
+        if (a-&gt;info % 2 != 0) printf("%d\n", a-&gt;info);
+        imparesDecrescente(a-&gt;esq);
+    }
+}</code></pre>
+      <p>Em ABP o item 5 pode ser mais rápido: desça comparando como na busca e pare quando o filho for o valor. A versão acima funciona em qualquer árvore binária.</p>
+      <p class="note">Cuidado com <span class="m">%</span> em negativos: em C, <span class="m">−3 % 2</span> é −1, por isso o teste certo é <span class="m">!= 0</span>, não <span class="m">== 1</span>. O seu abp.c já faz isso.</p>
+    </div></details>
+  </div>
+
+  <div class="box gap"><h3>Trabalho de árvores</h3>
+    <p>Pelo cronograma, a implementação do trabalho de árvores é em 20/11 (feriado) e a apresentação em 04/12. Esse trabalho vale 80% da nota Trab, que não tem recuperação. O enunciado ainda não estava no AVA quando a trilha foi montada: confira na aula 16 e reserve o feriado para ele.</p>
+  </div>
+</section>
+
+<!-- ============ PASSO 11 ============ -->
+<section class="step" data-s="11" data-tag="S2" data-label="AVL">
+  <div class="shead"><span class="day">Semana 2 · sábado 21/11 · aulas 15 e 16</span><span class="of"></span></div>
+  <h2>AVL: fator de balanceamento e rotações</h2>
+  <p class="intro">A AVL é a ABP que se conserta sozinha. O material da aula 16 (13/11) ainda não estava publicado; o que está aqui é o conteúdo padrão do tema. Quando os slides saírem, confira a convenção de sinal do fator e acrescente os exercícios da professora a este passo.</p>
+
+  <div class="ess"><span class="tag">O essencial</span>
+    <ul>
+      <li><b>Fator de balanceamento</b> de um nó: <span class="m">FB = altura(dir) − altura(esq)</span> (alguns materiais usam esq − dir; o que importa é o módulo). Na AVL todo nó tem <span class="m">FB ∈ {−1, 0, +1}</span>.</li>
+      <li>Depois de inserir, suba até a raiz atualizando alturas; o <b>primeiro</b> nó com |FB| = 2 (o mais baixo) é onde se faz a rotação.</li>
+      <li>Quatro casos, pelo caminho do nó desbalanceado até o inserido: <b>esq-esq</b> → rotação simples à <b>direita</b>; <b>dir-dir</b> → rotação simples à <b>esquerda</b>; <b>esq-dir</b> → dupla (esquerda no filho, depois direita no nó); <b>dir-esq</b> → dupla (direita no filho, depois esquerda no nó).</li>
+      <li>Rotação à direita em P com filho esquerdo F: F vira raiz do trecho, P vira filho direito de F, e a antiga subárvore direita de F vira a esquerda de P. À esquerda é o espelho.</li>
+      <li>Uma rotação basta por inserção. O central continua ordenado depois de qualquer rotação.</li>
+      <li><b>Por quê:</b> altura ≤ 1,44·log₂ n, então busca, inserção e remoção são O(log n) garantidos. A ABP comum pode virar lista (O(n)).</li>
+    </ul>
+  </div>
+
+  <div class="item" data-id="p11-4casos">
+    <div class="ihead"><span class="src">TR 11 · os quatro casos</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira em AVL vazia, nesta ordem, e desenhe antes e depois da rotação, dizendo qual caso é: a) 10, 20, 30; b) 30, 20, 10; c) 10, 30, 20; d) 30, 10, 20.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Nos quatro casos a árvore final é a mesma: <span class="res">20 na raiz, 10 à esquerda, 30 à direita</span>. O que muda é o caminho até lá.</p>
+      <ul>
+        <li><b>a)</b> 10 → 20 → 30 fica inclinada para a direita (FB de 10 = +2, caso <b>dir-dir</b>): rotação simples à <b>esquerda</b> em 10; 20 sobe.</li>
+        <li><b>b)</b> 30 → 20 → 10 inclinada para a esquerda (FB de 30 = −2, caso <b>esq-esq</b>): rotação simples à <b>direita</b> em 30.</li>
+        <li><b>c)</b> 10 tem 30 à direita e 30 tem 20 à esquerda (caso <b>dir-esq</b>): rotação à direita em 30 (vira 10 → 20 → 30) e depois à esquerda em 10.</li>
+        <li><b>d)</b> 30 tem 10 à esquerda e 10 tem 20 à direita (caso <b>esq-dir</b>): rotação à esquerda em 10 (vira 30 → 20 → 10) e depois à direita em 30.</li>
+      </ul>
+      <p class="note">Regra de bolso: se o "zigue-zague" muda de lado (dir-esq ou esq-dir), é dupla; se segue reto, é simples.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p11-seq">
+    <div class="ihead"><span class="src">TR 12</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">50, 30, 70, 20, 40, 10</span> em uma AVL. Indique o nó que ficou desbalanceado, o caso, a rotação e a árvore final com o FB de cada nó.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Até 40 não há problema: 50 com filhos 30 (20, 40) e 70. Ao inserir 10 (sob o 20, à esquerda), o 50 fica com altura esquerda 3 e direita 1: FB = −2, e o caminho 50 → 30 → 20 é <b>esq-esq</b>. Rotação simples à direita em 50: 30 sobe, 50 vira filho direito de 30 e recebe o 40 (antiga direita de 30) como filho esquerdo.</p>
+      <div class="tree">         30 (0)
+        /      \
+    20 (−1)    50 (0)
+    /          /  \
+ 10 (0)    40 (0)  70 (0)</div>
+      <p class="res">Uma rotação; central 10 20 30 40 50 70 continua ordenado.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p11-ord">
+    <div class="ihead"><span class="src">TR 13</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">1, 2, 3, 4, 5, 6, 7</span> em ordem numa AVL. Quantas rotações acontecem e qual é a árvore final? Compare com a ABP comum do TR 10.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <ul>
+        <li>1, 2, 3: FB de 1 = +2 → rotação à esquerda em 1 → raiz 2.</li>
+        <li>4: fica sob 3. 5: 3 fica com FB +2 → rotação à esquerda em 3 → 2 (1, 4(3, 5)).</li>
+        <li>6: fica sob 5; agora 2 tem FB +2 (esq altura 1, dir altura 3) → rotação à esquerda em 2 → 4 (2(1, 3), 5(—, 6)).</li>
+        <li>7: fica sob 6; 5 fica com FB +2 → rotação à esquerda em 5 → 4 (2(1, 3), 6(5, 7)).</li>
+      </ul>
+      <div class="tree">        4
+      /   \
+     2     6
+    / \   / \
+   1   3 5   7</div>
+      <p class="res">4 rotações, todas simples à esquerda; árvore perfeitamente balanceada, altura 3</p>
+      <p>Na ABP comum, os mesmos dados dariam uma lista de altura 7. É o ganho da AVL: a altura fica em O(log n) qualquer que seja a ordem de chegada.</p>
+    </div></details>
+  </div>
+</section>
+<!-- ============ PASSO 12 ============ -->
+<section class="step" data-s="12" data-tag="S2" data-label="Revisão da semana 2">
+  <div class="shead"><span class="day">Semana 2 · domingo 22/11</span><span class="of"></span></div>
+  <h2>Refazer os ✗ da semana 2</h2>
+  <p class="intro">Tudo que você marcou com ✗ nos passos 7 a 11 (árvores). Refaça no papel, sem olhar; ao acertar, troque a marca no passo de origem.</p>
+  <div data-xlist data-xfrom="7" data-xto="11" data-xempty="Nenhum ✗ nos passos 7 a 11."></div>
+  <div class="box"><h3>Antes de seguir</h3>
+    <p>Complete a lista do passo 6 com o que apareceu nesta semana: as três regras de remoção na ABP, os quatro casos da AVL e a ordem V-E-D de cada caminhamento.</p>
+  </div>
+</section>
+
+<!-- ============ PASSO 13 ============ -->
+<section class="step" data-s="13" data-tag="S3" data-label="Simulado">
+  <div class="shead"><span class="day">Semana 3 · segunda 23/11</span><span class="of"></span></div>
+  <h2>Simulado da Prova 2</h2>
+  <p class="intro">Oito questões cobrindo o conteúdo anunciado no cronograma: pesquisa binária, tabela hash, ordenação, árvores binárias, ABP, expressões e AVL. Faça em 1h30, sem consultar, e marque ✓ ou ✗.</p>
+
+  <div class="item" data-id="p13-s1">
+    <div class="ihead"><span class="src">Simulado 1</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">No vetor <span class="m">{2, 5, 8, 12, 16, 23, 38, 56, 72, 91}</span>, execute a pesquisa binária de 72 mostrando (inf, sup, meio) em cada passo. Depois diga, em uma frase, por que a pesquisa binária é O(log n).</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>(0, 9) meio 4 = 16 &lt; 72 → inf 5; (5, 9) meio 7 = 56 &lt; 72 → inf 8; (8, 9) meio 8 = 72 → achou no índice 8. <span class="res">3 passos</span>. É O(log n) porque cada comparação descarta metade do intervalo restante: depois de k passos sobram n/2ᵏ elementos.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s2">
+    <div class="ihead"><span class="src">Simulado 2</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">14, 27, 3, 16, 40</span> em uma tabela hash de 13 posições com <span class="m">h(k) = k mod 13</span> e busca linear (<span class="m">(h + 1) mod 13</span>). Mostre a tabela e diga quantas comparações custa buscar 40 e buscar 29.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>14 → 1; 27 → 1 ocupado → 2; 3 → 3; 16 → 3 ocupado → 4; 40 → 1 → 2 → 3 → 4 → <b>5</b>.</p>
+      <div class="tw"><table><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6…12</th></tr><tr><td>—</td><td>14</td><td>27</td><td>3</td><td>16</td><td>40</td><td>—</td></tr></table></div>
+      <p>Buscar 40: h = 1, compara com 14, 27, 3, 16, 40 → <span class="res">5 comparações</span>. Buscar 29: h = 3; compara com 3, 16, 40 e encontra a posição 6 vazia → <span class="res">3 comparações e "não está"</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s3">
+    <div class="ihead"><span class="src">Simulado 3</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Execute a seleção direta em <span class="m">[7, 2, 9, 4, 1]</span> mostrando o vetor após cada passo externo; dê o número de comparações e de trocas. Qual método simples faria <b>mais</b> trocas nesse vetor?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>i=0: menor 1 ↔ 7 → <span class="m">[1, 2, 9, 4, 7]</span>; i=1: menor 2, já no lugar; i=2: menor 4 ↔ 9 → <span class="m">[1, 2, 4, 9, 7]</span>; i=3: menor 7 ↔ 9 → <span class="m">[1, 2, 4, 7, 9]</span>. <span class="res">10 comparações, 3 trocas</span>.</p>
+      <p>O bubblesort: cada inversão vira uma troca (aqui 7 inversões: 7&gt;2, 7&gt;4, 7&gt;1, 2&gt;1, 9&gt;4, 9&gt;1, 4&gt;1 → 7 trocas).</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s4">
+    <div class="ihead"><span class="src">Simulado 4</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Construa o heap máximo de <span class="m">{3, 9, 2, 1, 4, 5}</span> com buildHeap (heapify de (n−1)/2 até 0) e dê o vetor final. Qual é o primeiro passo do heapsort a partir dele?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>n = 6, começa em i = 2: a[2] = 2, filho 5 (5) → troca → <span class="m">{3, 9, 5, 1, 4, 2}</span>. i = 1: 9 ≥ 1, 4 → ok. i = 0: 3 &lt; 9 → troca → <span class="m">{9, 3, 5, 1, 4, 2}</span>; desce em 1: 3 &lt; 4 → troca → <span class="m">{9, 4, 5, 1, 3, 2}</span>.</p>
+      <p class="res">{9, 4, 5, 1, 3, 2}</p>
+      <p>Heapsort: troca a raiz 9 com o último (2) → <span class="m">{2, 4, 5, 1, 3, 9}</span>, reduz n para 5 e faz heapify(0): 2 &lt; 5 → <span class="m">{5, 4, 2, 1, 3, 9}</span>. O 9 já está no lugar definitivo.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s5">
+    <div class="ihead"><span class="src">Simulado 5</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Na árvore A (filhos B e C), B (filhos D e E), E (filho G), C (filho F): dê as folhas, o grau de B, o nível de G, o caminho de A a G com o comprimento, a profundidade máxima, e os três caminhamentos à esquerda considerando que D, E, F e G são filhos esquerdos quando únicos.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tree">      A
+     / \
+    B   C
+   / \  /
+  D   E F
+      /
+     G</div>
+      <p>Folhas: D, G, F. Grau de B: 2. Nível de G: 3. Caminho A-B-E-G, comprimento 3. Profundidade máxima 3.</p>
+      <p>Pré: <span class="m">A B D E G C F</span>; central: <span class="res">D B G E A F C</span> (esquerda, nó, direita: D, B, depois a subárvore de E, que é G e E, depois A, depois F e C); pós: <span class="res">D G E B F C A</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s6">
+    <div class="ihead"><span class="src">Simulado 6</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">40, 20, 60, 10, 30, 50, 70, 25</span> em uma ABP. Dê o central e o pós-fixado. Depois remova o 20 promovendo o menor valor à direita e desenhe o resultado.</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tree">        40
+       /   \
+     20     60
+    /  \    / \
+  10   30  50  70
+       /
+     25</div>
+      <p>Central: <span class="m">10 20 25 30 40 50 60 70</span>. Pós: <span class="m">10 25 30 20 50 70 60 40</span>.</p>
+      <p>Remover 20 (dois filhos): menor da direita = desce em 30 e vai à esquerda: <b>25</b>. 25 ocupa o lugar de 20; o 30 fica sem filho esquerdo.</p>
+      <div class="tree">        40
+       /   \
+     25     60
+    /  \    / \
+  10   30  50  70</div>
+      <p class="res">Central depois: 10 25 30 40 50 60 70</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s7">
+    <div class="ihead"><span class="src">Simulado 7</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Monte a árvore de <span class="m">(a + b) * (c − d / e)</span>, escreva a notação polonesa, a polonesa reversa e a forma totalmente parentizada. Qual percurso gera cada uma?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <div class="tree">        *
+      /   \
+     +     −
+    / \   / \
+   a   b c   /
+            / \
+           d   e</div>
+      <p>Polonesa (pré-ordem): <span class="m">* + a b − c / d e</span>. Reversa (pós-ordem): <span class="m">a b + c d e / − *</span>. Parentizada (central com parênteses): <span class="res">((a+b)*(c−(d/e)))</span>.</p>
+    </div></details>
+  </div>
+
+  <div class="item" data-id="p13-s8">
+    <div class="ihead"><span class="src">Simulado 8</span><div class="marks"><button type="button" data-m="ok">✓ acertei</button><button type="button" data-m="x">✗ errei</button></div></div>
+    <p class="q">Insira <span class="m">20, 10, 30, 5, 3</span> em uma AVL. Qual nó desbalanceia, qual é o caso e a rotação, e como fica a árvore? Qual seria a altura da ABP comum com a mesma sequência?</p>
+    <details class="ans"><summary>Resposta</summary><div>
+      <p>Após 3 (sob o 5, à esquerda): o nó 10 fica com altura esquerda 2 e direita 0, FB = −2, caminho 10 → 5 → 3 (<b>esq-esq</b>): rotação simples à direita em 10; o 5 sobe.</p>
+      <div class="tree">       20
+      /  \
+     5    30
+    / \
+   3   10</div>
+      <p class="res">Uma rotação; alturas: AVL 3, ABP comum 4 (20 → 10 → 5 → 3)</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PASSO 14 ============ -->
+<section class="step" data-s="14" data-tag="S3" data-label="Revisão final">
+  <div class="shead"><span class="day">Semana 3 · terça 24/11 a quinta 26/11</span><span class="of"></span></div>
+  <h2>Refazer os ✗ e fechar o resumo</h2>
+  <p class="intro">Tudo que ainda está com ✗, da trilha inteira. Refaça o que der até quinta; o que sobrar é a última leitura antes da prova.</p>
+
+  <div data-xlist data-xfrom="1" data-xto="13" data-xempty="Nenhum ✗ pendente na trilha inteira."></div>
+
+  <div class="box"><h3>O que o simulado revelou</h3>
+    <p class="note">Os ✗ do passo 13 são o que mais merece espaço no resumo.</p>
+    <div data-xlist data-xfrom="13" data-xto="13" data-xempty="Nenhum ✗ no simulado."></div>
+  </div>
+
+  <div class="box"><h3>Da sua lista de consultas (passos 6 e 12)</h3>
+    <div id="ecoFormulas" class="empty">Nada anotado ainda nos passos de revisão.</div>
+  </div>
+
+  <div class="box"><h3>Resumo de uma página — escreva à mão, mesmo que a prova seja sem consulta</h3>
+    <p class="note">Escrever fixa. Confirme com a professora se a Prova 2 permite consulta; se permitir, é esta folha.</p>
+    <ul class="check">
+      <li><label><input type="checkbox" data-ck="f1"><span><b>Pesquisa binária:</b> o laço com inf, sup, meio; ⌈log₂(n+1)⌉; só em vetor ordenado</span></label></li>
+      <li><label><input type="checkbox" data-ck="f2"><span><b>Hash:</b> k mod M; as três formas de colisão (lista, busca linear com (h+1) mod M, buckets + overflow); tamanho primo</span></label></li>
+      <li><label><input type="checkbox" data-ck="f3"><span><b>Ordenação simples:</b> um passo de cada (bubble, seleção, inserção) e a contagem n(n−1)/2</span></label></li>
+      <li><label><input type="checkbox" data-ck="f4"><span><b>Ordenação complexa:</b> partição do quick, incrementos do shell, filas do radix, intercalação do merge; tabela de complexidades</span></label></li>
+      <li><label><input type="checkbox" data-ck="f5"><span><b>Heap:</b> filhos 2i+1, 2i+2; pai (i−1)/2; buildHeap de (n−1)/2 a 0; heapify O(log n); heapsort troca raiz com último</span></label></li>
+      <li><label><input type="checkbox" data-ck="f6"><span><b>Árvores:</b> vocabulário (grau, nível, profundidade, caminho); n-ária ↔ binária (esq = filho, dir = irmão); as quatro representações</span></label></li>
+      <li><label><input type="checkbox" data-ck="f7"><span><b>Caminhamentos:</b> V-E-D, E-V-D, E-D-V e as versões à direita; pilha = profundidade, fila = largura; reconstrução com pré + central</span></label></li>
+      <li><label><input type="checkbox" data-ck="f8"><span><b>ABP:</b> inserção, busca e as três regras de remoção (maior da esquerda / menor da direita); central sai ordenado; o código de insere</span></label></li>
+      <li><label><input type="checkbox" data-ck="f9"><span><b>Expressões:</b> raiz = último operador; pré = polonesa, pós = RPN; avaliação por pilha; função parentizada</span></label></li>
+      <li><label><input type="checkbox" data-ck="f10"><span><b>AVL:</b> FB ∈ {−1, 0, 1}; quatro casos e as rotações; altura O(log n)</span></label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ PASSO 15 ============ -->
+<section class="step" data-s="15" data-tag="P2" data-label="Checklist da prova">
+  <div class="shead"><span class="day">Sexta 27/11 — Prova 2 (aula 18)</span><span class="of"></span></div>
+  <h2>Checklist da prova</h2>
+  <p class="intro">Conteúdo anunciado no cronograma: pesquisa binária, tabela hash, métodos de ordenação, árvores binárias e suas aplicações (ABPs, expressões aritméticas, AVL). Confira na noite anterior e de novo antes de sair.</p>
+
+  <div class="box"><h3>Para levar</h3>
+    <ul class="check">
+      <li><label><input type="checkbox" data-ck="p1"><span>Lápis, borracha, caneta e <b>papel de rascunho</b> para desenhar árvores e tabelas</span></label></li>
+      <li><label><input type="checkbox" data-ck="p2"><span>Resumo de uma página, se a prova permitir consulta (confirmado com a professora)</span></label></li>
+      <li><label><input type="checkbox" data-ck="p3"><span>Celular guardado</span></label></li>
+    </ul>
+  </div>
+
+  <div class="box"><h3>Os cinco erros que mais custam ponto</h3>
+    <ol>
+      <li><b>Remoção na ABP</b> com dois filhos: escolher o substituto errado ou esquecer de mover o filho do substituto. Teste pelo central: tem que continuar ordenado.</li>
+      <li><b>Caminhamento à direita:</b> inverter só a visita e não as subárvores. Escreva V-E-D / V-D-E no canto da folha antes de começar.</li>
+      <li><b>Hash com busca linear:</b> parar na primeira colisão em vez de continuar até a vaga; e esquecer de "dar a volta" com o mod.</li>
+      <li><b>Heap:</b> confundir índices (filhos 2i+1 e 2i+2) ou começar o buildHeap em 0 em vez de (n−1)/2.</li>
+      <li><b>Expressão:</b> colocar na raiz o primeiro operador em vez do <b>último</b> a ser executado. Em <span class="m">a + b * c</span> a raiz é +, não *.</li>
+    </ol>
+  </div>
+
+  <div class="box"><h3>Último minuto antes de entregar</h3>
+    <p>Em toda árvore desenhada, escreva o central embaixo e confira se está ordenado (ABP e AVL). Em toda tabela hash, confira se cada chave está na primeira posição livre a partir do seu h(k). Em toda contagem, confira se o número de comparações bate com n(n−1)/2 quando o método é o bubble ou a seleção.</p>
+  </div>
+</section>
+
+</main>
+
+<div class="pager">
+  <button type="button" id="prev">← Anterior</button>
+  <button type="button" class="next" id="next">Próximo →</button>
+</div>
+
+<footer>
+  <p>Montado a partir do material da disciplina na sua pasta local: seções Conteúdo e Exercício das aulas 11 a 15, slides e PDFs da professora (complexidade, tabelas hash, ordenação, árvores, caminhamentos, aplicações de árvores binárias), as questões do Enade postadas nas aulas 11 e 12, e os seus TDEs de hash e de ABP. Os itens marcados <b>TR</b> foram escritos para esta trilha e conferidos; os códigos em C compilam.</p>
+  <p>O material da aula 16 (AVL) ainda não tinha sido publicado quando a trilha foi montada; o passo 11 usa o conteúdo padrão do tema. Progresso, marcações e anotações ficam salvos neste navegador.</p>
+</footer>
+</div>
+<script>
+(function () {
+  "use strict";
+  var KEY = "aed-prova2-trilha-v1";
+  var main = document.getElementById("main");
+  var steps = Array.prototype.slice.call(main.querySelectorAll(".step"));
+  var items = Array.prototype.slice.call(main.querySelectorAll(".item"));
+  var total = steps.length;
+  var state = { step: 1, marks: {}, checks: {}, notes: "" };
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); if (p && typeof p === "object") { state.step = p.step || 1; state.marks = p.marks || {}; state.checks = p.checks || {}; state.notes = typeof p.notes === "string" ? p.notes : ""; } }
+  } catch (e) {}
+  var save = function () { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+  var dots = document.getElementById("dots");
+  steps.forEach(function (sec) {
+    var n = +sec.dataset.s;
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "dot"; b.dataset.s = n;
+    b.innerHTML = '<span class="n">' + n + '</span><span class="d">' + (sec.dataset.tag || "") + '</span> ' + sec.dataset.label;
+    b.addEventListener("click", function () { go(n); });
+    dots.appendChild(b);
+  });
+  var dotEls = Array.prototype.slice.call(dots.children);
+  var itemStep = function (el) { return +el.closest(".step").dataset.s; };
+
+  items.forEach(function (el) {
+    el.querySelectorAll(".marks button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = el.dataset.id, m = btn.dataset.m;
+        if (state.marks[id] === m) { delete state.marks[id]; } else { state.marks[id] = m; }
+        save(); paint(); buildX();
+      });
+    });
+  });
+
+  var countEl = document.getElementById("count");
+  var paint = function () {
+    items.forEach(function (el) {
+      var m = state.marks[el.dataset.id];
+      if (m) { el.dataset.mark = m; } else { delete el.dataset.mark; }
+      el.querySelectorAll(".marks button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.m === m)); });
+    });
+    var done = 0, bad = 0;
+    items.forEach(function (el) { var m = state.marks[el.dataset.id]; if (m === "ok") { done++; } else if (m === "x") { bad++; } });
+    var marked = done + bad;
+    countEl.textContent = marked + " de " + items.length + " exercícios feitos" + (bad ? " · " + bad + " com ✗" : "");
+    var meter = document.getElementById("meter");
+    meter.style.width = (items.length ? (marked / items.length) * 100 : 0) + "%";
+    meter.classList.toggle("has-x", bad > 0);
+    if (bad > 0) { meter.style.setProperty("--okpct", (marked ? (done / marked) * 100 : 0) + "%"); }
+    dotEls.forEach(function (d) {
+      var n = +d.dataset.s; var its = steps[n - 1].querySelectorAll(".item"); var full = its.length > 0;
+      its.forEach(function (el) { if (state.marks[el.dataset.id] !== "ok") { full = false; } });
+      d.classList.toggle("full", full);
+    });
+  };
+
+  var cloneItem = function (el) {
+    var box = document.createElement("div"); box.className = "item"; box.dataset.mark = "x";
+    var head = document.createElement("div"); head.className = "ihead";
+    head.appendChild(el.querySelector(".src").cloneNode(true));
+    var jump = document.createElement("button"); jump.type = "button"; jump.className = "tool"; jump.style.marginLeft = "auto";
+    jump.textContent = "ir ao passo " + itemStep(el);
+    jump.addEventListener("click", function () { go(itemStep(el), el.dataset.id); });
+    head.appendChild(jump); box.appendChild(head);
+    el.querySelectorAll(":scope > .q, :scope > .sub, :scope > .tw, :scope > .tree, :scope > pre, :scope > .note").forEach(function (n) { box.appendChild(n.cloneNode(true)); });
+    var ans = el.querySelector("details.ans"); if (ans) { box.appendChild(ans.cloneNode(true)); }
+    return box;
+  };
+  var fill = function (host) {
+    var from = +host.dataset.xfrom, to = +host.dataset.xto, emptyMsg = host.dataset.xempty || "Nenhum ✗ pendente aqui.";
+    host.innerHTML = ""; var any = false;
+    items.forEach(function (el) { var s = itemStep(el); if (s < from || s > to) { return; } if (state.marks[el.dataset.id] !== "x") { return; } host.appendChild(cloneItem(el)); any = true; });
+    if (!any) { var p = document.createElement("p"); p.className = "empty"; p.textContent = emptyMsg; host.appendChild(p); }
+  };
+  var buildX = function () { document.querySelectorAll("[data-xlist]").forEach(fill); };
+
+  document.querySelectorAll("[data-ck]").forEach(function (cb) {
+    cb.checked = !!state.checks[cb.dataset.ck];
+    cb.addEventListener("change", function () { state.checks[cb.dataset.ck] = cb.checked; save(); });
+  });
+  var ta = document.getElementById("notaFormulas"), eco = document.getElementById("ecoFormulas");
+  var echoNotes = function () {
+    if (!eco) { return; }
+    var v = (state.notes || "").trim();
+    if (!v) { eco.className = "empty"; eco.textContent = "Nada anotado ainda nos passos de revisão."; return; }
+    eco.className = ""; eco.innerHTML = "";
+    v.split(/\n+/).forEach(function (line) { if (!line.trim()) { return; } var p = document.createElement("p"); p.textContent = line; eco.appendChild(p); });
+  };
+  if (ta) { ta.value = state.notes; ta.addEventListener("input", function () { state.notes = ta.value; save(); echoNotes(); }); }
+
+  var prev = document.getElementById("prev"), next = document.getElementById("next");
+  function go(n, focusId) {
+    n = Math.min(total, Math.max(1, n)); state.step = n; save();
+    steps.forEach(function (s) { s.classList.toggle("on", +s.dataset.s === n); });
+    dotEls.forEach(function (d) { d.setAttribute("aria-current", String(+d.dataset.s === n)); });
+    var cur = steps[n - 1];
+    cur.querySelector(".of").textContent = "Passo " + n + " de " + total;
+    prev.disabled = n === 1; next.disabled = n === total; next.textContent = n === total ? "Fim" : "Próximo →";
+    buildX();
+    var active = dotEls[n - 1]; if (active && active.scrollIntoView) { active.scrollIntoView({ block: "nearest", inline: "center" }); }
+    if (focusId) { var t = cur.querySelector('[data-id="' + focusId + '"]'); if (t) { t.scrollIntoView({ block: "center" }); return; } }
+    window.scrollTo(0, 0);
+  }
+  prev.addEventListener("click", function () { go(state.step - 1); });
+  next.addEventListener("click", function () { go(state.step + 1); });
+  document.addEventListener("keydown", function (e) {
+    if (e.target.matches("textarea, input, summary")) { return; }
+    if (e.key === "ArrowRight") { go(state.step + 1); } if (e.key === "ArrowLeft") { go(state.step - 1); }
+  });
+  var msg = document.getElementById("msg");
+  var say = function (t) { msg.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { msg.textContent = ""; }, 3500); };
+  document.getElementById("jumpX").addEventListener("click", function () {
+    var first = null; items.forEach(function (el) { if (!first && state.marks[el.dataset.id] === "x") { first = el; } });
+    if (!first) { say("Nenhum exercício marcado com ✗ ainda."); return; }
+    go(itemStep(first), first.dataset.id);
+  });
+  var reset = document.getElementById("reset"), armed = false;
+  reset.addEventListener("click", function () {
+    if (!armed) { armed = true; reset.textContent = "Confirmar: apagar tudo?"; reset.classList.add("danger"); setTimeout(function () { armed = false; reset.textContent = "Zerar"; reset.classList.remove("danger"); }, 4000); return; }
+    armed = false; reset.textContent = "Zerar"; reset.classList.remove("danger");
+    state = { step: 1, marks: {}, checks: {}, notes: "" }; save();
+    document.querySelectorAll("[data-ck]").forEach(function (cb) { cb.checked = false; });
+    if (ta) { ta.value = ""; }
+    echoNotes(); paint(); go(1); say("Marcações, checklists e anotações apagados.");
+  });
+  echoNotes(); paint(); go(state.step);
+})();
+</script>

@@ -1,0 +1,60 @@
+2° Trabalho de Implementação de
+Algoritmos e Estruturas de Dados (2024-2):
+Esportes e Atletas utilizando ABPs (ou AVLs)
+Descrição do problema:
+A organização para ida a um grande evento esportivo envolve saber quais são os
+esportes considerados, e quais os atletas selecionados para participar das competições
+em cada esporte. É um grande número de nomes de atletas, que precisam estar
+separados por esportes. O objetivo deste trabalho é implementar a uma estrutura
+ordenada de acesso a um conjunto de esportes e nomes de atletas em cada
+esporte. O conjunto é organizado através de uma lista de ABPs (ou de AVLs) – os
+esportes -, com uma ABP (ou AVL) por esporte com os nomes de seus atletas, tendo
+como critério de ordenação a ordem alfabética dos nomes dos produtos.
+Organização: trabalho individual ou em duplas
+Apresentação:
+A apresentação do trabalho será realizada na sala de aula, para a professora. Para
+a apresentação, se o trabalho for feito em dupla ambos os participantes devem estar
+presentes e participar da explicação sobre a implementação realizada.
+Até o dia da apresentação, fazer upload do trabalho na tarefa correspondente no
+AVA do trabalho: código-fonte da implementação.
+Representação:
+1) uma lista de esportes em ordem alfabética, sendo que cada esporte tem a referência
+da ABP dos nomes dos atletas daquele esporte:
+ atletismo basquete ginástica iatismo voleibol ….
+A lista de esportes pode ser implementada lista ou como árvore, com
+implementação por vetor ou por alocação dinâmica.
+2) ABPs para os nomes dos atletas de um esporte. Cada ABP é composta por nodos que
+joao
+carla marcos
+daiane
+carlos juliana
+luis
+bruno
+contêm as seguintes informações:
+• nome do atleta
+• referências para filhos da esquerda e da direita
+Implementação:
+ Preferencialmente implementado em C (aceita-se C++, C#, Java ou Python, desde
+que as referências entre os nodos sejam manipuladas explicitamente pelo programa: não
+pode usar classe, método ou função pronta da linguagem para a lista nem para as
+ABPs/AVLs).
+Cada nodo deverá conter as informações acima enumeradas (o nome do atleta,
+referências), mas pode conter outras informações necessárias para a realização das
+operações.
+A interface pode ser bem simples (textual), o importante é que as operações
+funcionem.
+Algumas operações básicas a serem oferecidas pelo programa:
+- INSERE_ESPORTE: permite a inserção de um esporte.
+- INSERE_ATLETA: permite a inserção de um atleta em um esporte.
+- CONSULTA_ESPORTE: consulta um esporte, informando sua quantidade de atletas.
+- REMOVE_ESPORTE: remove um esporte da lista/ABP.
+- REMOVE_ATLETA: remove um atleta de um esporte específico.
+- TOTAL_ATLETAS: retorna o número total de atletas.
+- TOTAL_ATLETAS_ORDENADO: retorna o total de atletas em cada esporte, em ordem
+decrescente de total de atletas
+- EXIBE_ATLETAS_TOTAL: exibe a lista dos nomes d ate todos os atletas em ordem
+alfabética (de A a Z) ou em ordem alfabética inversa (de Z a A) .
+- EXIBE_ATLETAS_ESPORTE: exibe a lista dos nomes dos atletas de um esporte , em
+ordem alfabética (de A a Z) ou em ordem alfabética inversa (de Z a A) .
+- PERCURSO_PREFIXADO: exibe os nomes dos atletas de um esporte em ordem préfixada.
+- outras operações que você definir

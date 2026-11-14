@@ -1,0 +1,22 @@
+Ao fazer o upload, você deve declarar o uso de IA no desenvolvimento do programa, incluindo um comentário no início do código. Para cada IA utilizada:
+
+qual (ou quais) IA e qual versão
+para que foi utilizada (não basta algo genérico como "para entender as principais operações"): descrever todas as utilizações, e como ela ajudou em cada uma das utilizações (principais prompts)
+Data da apresentação/entrega: 04/12/2026
+
+
+
+Texto a ser incluído para inicializar o programa: 
+
+o tempo passa o tempo voa e o mundo gira sem parar porque o mundo precisa girar para a vida acontecer e a vida passa muito rapido se voce nao aproveitar cada momento da vida por isso viva intensamente cada dia e repita sempre que a vida e bela e cheia de surpresas boas que chegam para mudar tudo de lugar e trazer muita felicidade verdadeira sempre todos os dias
+
+
+
+Avaliação:
+
+Estruturas de dados (2,0):
+Implementação das operações (6,0):
+Operações extras (1,0):
+AVL (1,0): 
+
+
